@@ -1,7 +1,7 @@
 use inc::Module::Install;
 
-name 'Gitosis-Admin-Web';
-all_from 'lib/Gitosis/Admin/Web.pm';
+name 'Gitosis-Web';
+all_from 'lib/Gitosis/Web.pm';
 
 requires 'Catalyst::Runtime' => '5.7014';
 requires 'Catalyst::Plugin::ConfigLoader';
