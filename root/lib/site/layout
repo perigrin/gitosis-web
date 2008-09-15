@@ -1,0 +1,5 @@
+<div id="header" class="span-30">[% PROCESS site/header %]</div>
+
+[% content %]
+
+<div id="footer" class="span-20">[% PROCESS site/footer %]</div>

@@ -1,0 +1,19 @@
+[% site.rgb = {
+     black  = '#000000'
+     white  = '#ffffff'
+     red    = '#F00'
+     pink  = '#F555FF'
+     blue   = '#06F'
+     yellow = '#FFFF66'
+   };
+
+   site.col = {
+	  title   = site.rbg.blue
+      page    = site.rgb.yellow
+      text    = site.rgb.black
+      head    = site.rgb.yellow
+      line    = site.rgb.pink
+      message = site.rgb.green
+      error   = site.rgb.red
+   };
+%]

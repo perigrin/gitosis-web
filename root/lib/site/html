@@ -1,0 +1,15 @@
+<p><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <title>[% template.title or site.title %]</title>
+  <link rel="stylesheet" href="/static/style/screen.css" type="text/css" media="screen, projection">
+  <link rel="stylesheet" href="/static/style/print.css" type="text/css" media="print"> <br />
+  <!--[if IE]><link rel="stylesheet" href="/static/style/ie.css" type="text/css" media="screen, projection"><![endif]-->
+  <meta name="verify-v1" content="ERFSRzzuH1rcMeYA6qxejU/Ao4LPhtytv4BoftzSoVE=" />
+ </head>
+ <body>
+<div class="container">
+[% content %]
+</div>
+ </body>
+</html></p>
