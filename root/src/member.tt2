@@ -1,4 +1,3 @@
 [% USE Wrap %]
-
 <h2>[% name %]</h2>
-<pre>[% key | wrap(80, '', '') %]</pre>
+<pre class="edit_area" id="key">[% key | wrap(80, '', '') %]</pre>

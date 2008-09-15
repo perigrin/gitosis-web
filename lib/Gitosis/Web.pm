@@ -13,7 +13,18 @@ use Catalyst::Runtime '5.70';
 # Static::Simple: will serve static files from the application's root
 #                 directory
 
-use Catalyst qw/-Debug ConfigLoader Static::Simple/;
+use Catalyst qw(
+  -Debug
+  ConfigLoader
+  Static::Simple
+
+  Authentication
+  Session
+  Session::Store::FastMmap
+  Session::State::Cookie
+
+  Unicode
+);
 
 our $VERSION = '0.01';
 
@@ -26,7 +37,30 @@ our $VERSION = '0.01';
 # with a external configuration file acting as an override for
 # local deployment.
 
-__PACKAGE__->config( name => 'Gitosis::Web' );
+__PACKAGE__->config(
+    name    => 'Gitosis::Web',
+    static  => { dirs => [qw(static/html static/css static/images static/js)] },
+    session => {
+        flash_to_stash => 1,
+        expires        => '1800',
+    },
+    authentication => {
+        default_realm => 'openid',
+        realms        => {
+            openid => {
+                ua_class => "LWPx::ParanoidAgent",
+                ua_args =>
+                  { whitelisted_hosts => [qw/ 127.0.0.1 localhost /], },
+                credential => {
+                    class => "OpenID",
+                    store => { class => "OpenID", },
+                },
+            },
+
+        },
+    },
+
+);
 
 # Start the application
 __PACKAGE__->setup;

@@ -45,6 +45,17 @@ sub member : Path('/member') {
     $c->stash->{template} = 'member.tt2';
 }
 
+sub openid : Path('/login') {
+    my ( $self, $c ) = @_;
+    if ( $c->authenticate() ) {
+        $c->flash( message => "You signed in with OpenID!" );
+        $c->res->redirect( $c->uri_for('/') );
+    }
+    else {
+        $c->stash->{template} = 'login.tt2';
+    }
+}
+
 =head2 end
 
 Attempt to render a view, if needed.
