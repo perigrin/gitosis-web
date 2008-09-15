@@ -28,9 +28,7 @@ Gitosis::Web::Controller::Root - Root Controller for Gitosis::Web
 
 sub default : Private {
     my ( $self, $c ) = @_;
-
-    # Hello World
-    $c->response->body( $c->welcome_message );
+    $c->stash->{template} = 'index.tt2';
 }
 
 =head2 end
@@ -39,7 +37,8 @@ Attempt to render a view, if needed.
 
 =cut 
 
-sub end : ActionClass('RenderView') {}
+sub end : ActionClass('RenderView') {
+}
 
 =head1 AUTHOR
 

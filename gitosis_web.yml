@@ -1,2 +1,7 @@
 ---
 name: Gitosis::Web
+Model::Config:
+     args:
+       file: /Users/perigrin/dev/gitosis-admin/gitosis.conf
+Model::SSHKeys:
+      root_dir: /Users/perigrin/dev/gitosis-admin/keydir

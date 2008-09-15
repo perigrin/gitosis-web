@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+    <title>Catalyst/TT Error</title>
+</head>
+
+<body>
+    <p>An error has occurred. We're terribly sorry about that, but it's one of those things that happens from time to time. Let's just hope the developers test everything properly before release...</p>
+
+    <p>Here's the error message, on the off-chance that it means something to you:</p>
+
+    <div class="error">
+        [% error %]
+    </div>
+</body>
+</html>

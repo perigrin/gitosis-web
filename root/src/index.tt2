@@ -1,0 +1,3 @@
+[% FOR group IN c.model('Config').groups %]
+<h2>[% group.name %]</h2>
+[% END %]
