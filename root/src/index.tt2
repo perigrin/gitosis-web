@@ -1,4 +1,4 @@
-[% FOR group IN c.model('Config').groups %]
+[% FOR group IN gitosis.groups %]
 <h2>[% group.name %]</h2>
 <ul>
     <li>writable: 
