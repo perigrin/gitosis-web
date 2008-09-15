@@ -12,8 +12,8 @@
 
    # define a data structure to hold sitewide data
    site = {
-     title     => 'Gitosis-Web',
-     copyright => '2008 Gitosis Web',
+     title     => 'Gitosis::Web',
+     copyright => '2008 Chris Prather',
    };
 
    # load up any other configuration items 
