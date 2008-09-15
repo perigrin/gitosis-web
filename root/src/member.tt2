@@ -1,0 +1,2 @@
+<h2>[% name %]</h2>
+<textarea style="width: 100ex; height: 50ex;">[% key %]</textarea>
