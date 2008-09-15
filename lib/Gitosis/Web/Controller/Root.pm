@@ -42,7 +42,7 @@ sub member : Path('/member') {
     my ( $self, $c, $name ) = @_;
     $c->stash->{name}     = $name;
     $c->stash->{key}      = $c->model('SSHKeys')->slurp("$name.pub");
-    $c->stash->{template} = 'repo.tt2';
+    $c->stash->{template} = 'member.tt2';
 }
 
 =head2 end
