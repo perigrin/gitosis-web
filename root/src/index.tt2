@@ -1,3 +1,13 @@
 [% FOR group IN c.model('Config').groups %]
 <h2>[% group.name %]</h2>
+<ul>
+    <li>writable: 
+    [% FOR repo IN group.writable %]
+        <a href="[% c.uri_for('/repo', repo) %]">[% repo %]</a>
+    [% END %]</li>
+    <li>members: 
+        [% FOR member IN group.members %]
+        <a href="[% c.uri_for('/member', member) %]">[% member %]</a>
+        [% END %]</li>
+</ul>
 [% END %]
