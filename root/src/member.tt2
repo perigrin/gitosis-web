@@ -1,3 +1,6 @@
 [% USE Wrap %]
 <h2>[% name %]</h2>
-<pre class="edit_area" id="key">[% key | wrap(80, '', '') %]</pre>
+<form action="" method="POST">
+<textarea class="edit_area" name="member.key">[% key | wrap(80, '', '') %]</textarea>
+    <input type="submit">
+</form>

@@ -40,15 +40,11 @@ our $VERSION = '0.01';
 __PACKAGE__->config(
     name    => 'Gitosis::Web',
     static  => { dirs => [qw(static/html static/css static/images static/js)] },
-    session => {
-        flash_to_stash => 1,
-        expires        => '1800',
-    },
+    session => {},
     authentication => {
         default_realm => 'openid',
         realms        => {
             openid => {
-                ua_class => "LWPx::ParanoidAgent",
                 ua_args =>
                   { whitelisted_hosts => [qw/ 127.0.0.1 localhost /], },
                 credential => {

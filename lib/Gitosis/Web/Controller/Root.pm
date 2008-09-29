@@ -38,11 +38,23 @@ sub repo : Path('/repo') {
     $c->stash->{template} = 'repo.tt2';
 }
 
-sub member : Path('/member') {
+sub member : Path('/member') : ActionClass('REST') {
+
+}
+
+sub member_GET {
     my ( $self, $c, $name ) = @_;
     $c->stash->{name}     = $name;
     $c->stash->{key}      = $c->model('SSHKeys')->slurp("$name.pub");
     $c->stash->{template} = 'member.tt2';
+}
+
+sub member_POST {
+    my ( $self, $c, $name ) = @_;
+    if ( my $key = $c->request->param('member.key') ) {
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+    }
+    $c->res->redirect( $c->uri_for( '/member', $name ) );
 }
 
 sub openid : Path('/login') {
