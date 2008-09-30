@@ -39,7 +39,6 @@ sub repo : Path('/repo') {
 }
 
 sub member : Path('/member') : ActionClass('REST') {
-
 }
 
 sub member_GET {
@@ -66,6 +65,20 @@ sub group_GET {
       grep { $_->name eq $name } @{ $c->model('Config')->groups };
 
     $c->stash->{template} = 'group.tt2';
+}
+
+sub group_POST {
+    my ( $self, $c, $name ) = @_;
+    my ($group) = grep { $_->name eq $name } @{ $c->model('Config')->groups };
+    if ( my $repos = $c->request->param('group.repos') ) {
+        $group->writable($repos);
+        $c->model('Config')->save;
+    }
+    if ( my $members = $c->request->param('group.members') ) {
+        $group->members($members);
+        $c->model('Config')->save;
+    }
+    $c->res->redirect( $c->uri_for( '/group', $name ) );
 }
 
 # sub openid : Path('/login') {

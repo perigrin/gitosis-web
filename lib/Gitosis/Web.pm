@@ -41,20 +41,21 @@ __PACKAGE__->config(
     name    => 'Gitosis::Web',
     static  => { dirs => [qw(static/html static/css static/images static/js)] },
     session => {},
-    authentication => {
-        default_realm => 'openid',
-        realms        => {
-            openid => {
-                ua_args =>
-                  { whitelisted_hosts => [qw/ 127.0.0.1 localhost /], },
-                credential => {
-                    class => "OpenID",
-                    store => { class => "OpenID", },
-                },
-            },
 
-        },
-    },
+    # authentication => {
+    #     default_realm => 'openid',
+    #     realms        => {
+    #         openid => {
+    #             ua_args =>
+    #               { whitelisted_hosts => [qw/ 127.0.0.1 localhost /], },
+    #             credential => {
+    #                 class => "OpenID",
+    #                 store => { class => "OpenID", },
+    #             },
+    #         },
+    #
+    #     },
+    # },
 
 );
 

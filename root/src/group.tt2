@@ -1,10 +1,12 @@
 <h2>[% group.name %]</h2>
+<form method="POST" action="">
 <ul>
     <li>repo:
-        <input type="text" style="width: 80ex" value="[% FOR repo IN group.writable %][% repo %] [% END %]"/>
+        <input type="text" name="group.repos" style="width: 80ex" value="[% FOR repo IN group.writable %][% repo %] [% END %]"/>
     </li>
     <li>members:        
-        <input type="text" style="width: 80ex" value="[% FOR member IN group.members %][% member %] [% END %]" />
+        <input type="text" name="group.members" style="width: 80ex" value="[% FOR member IN group.members %][% member %] [% END %]" />
     </li>
 </ul>
 <input type="submit" />
+</form>
