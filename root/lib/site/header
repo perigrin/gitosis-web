@@ -2,7 +2,7 @@
 <h1>Gitosis Web</h1>
 <div>
     <span><a href="/">Home</a></span>
-    <span><a href="/login">Login</a></span>
+    <!-- <span><a href="/login">Login</a></span> -->
 </div>
 <hr class="space" />
 <!-- END site/header -->

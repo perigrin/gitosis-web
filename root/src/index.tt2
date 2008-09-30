@@ -3,15 +3,17 @@
 <ul>
     <li>repo:
     [% FOR repo IN group.writable %]
-       <a href="[% c.uri_for('/repo', repo) %]">[% repo %]</a>
+       <!-- <a href="[% c.uri_for('/repo', repo) %]"> -->
+           [% repo %]
+       <!-- </a> -->
     [% END %]
-    <span>[add]</span> <span>[del]</span>
     </li>
     <li>members:        
         [% FOR member IN group.members %]
         <a href="[% c.uri_for('/member', member) %]">[% member %]</a>
         [% END %]        
-         <span>[add]</span> <span>[del]</span>
         </li>
 </ul>
+<span>[<a href="[% c.uri_for('/group', group.name) %]">edit</a>]</span>
+<hr class="space" />
 [% END %]

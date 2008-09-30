@@ -52,21 +52,32 @@ sub member_GET {
 sub member_POST {
     my ( $self, $c, $name ) = @_;
     if ( my $key = $c->request->param('member.key') ) {
-        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        die $c->model('SSHKeys')->splat( "$name.pub", $key );
     }
     $c->res->redirect( $c->uri_for( '/member', $name ) );
 }
 
-sub openid : Path('/login') {
-    my ( $self, $c ) = @_;
-    if ( $c->authenticate() ) {
-        $c->flash( message => "You signed in with OpenID!" );
-        $c->res->redirect( $c->uri_for('/') );
-    }
-    else {
-        $c->stash->{template} = 'login.tt2';
-    }
+sub group : Path('/group') : ActionClass('REST') {
 }
+
+sub group_GET {
+    my ( $self, $c, $name ) = @_;
+    ( $c->stash->{group} ) =
+      grep { $_->name eq $name } @{ $c->model('Config')->groups };
+
+    $c->stash->{template} = 'group.tt2';
+}
+
+# sub openid : Path('/login') {
+#     my ( $self, $c ) = @_;
+#     if ( $c->authenticate() ) {
+#         $c->flash( message => "You signed in with OpenID!" );
+#         $c->res->redirect( $c->uri_for('/') );
+#     }
+#     else {
+#         $c->stash->{template} = 'login.tt2';
+#     }
+# }
 
 =head2 end
 
