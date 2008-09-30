@@ -9,6 +9,7 @@ requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Action::RenderView';
 requires 'Catalyst::Action::REST';
 requires 'Catalyst::Model::Adaptor';
+requires 'Catalyst::Model::File';
 requires 'Gitosis::Config' => '0.0.3';
 requires 'YAML';    # This should reflect the config file format you've chosen
                     # See Catalyst::Plugin::ConfigLoader for supported formats
