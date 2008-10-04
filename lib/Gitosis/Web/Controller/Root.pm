@@ -34,8 +34,10 @@ sub default : Private {
 
 sub repo : Path('/repo') {
     my ( $self, $c, $name ) = @_;
-    $c->stash->{name}     = $name;
-    $c->stash->{template} = 'repo.tt2';
+    $c->stash->{repo_path} = "/Users/perigrin/dev/$name/.git";
+    $c->stash->{repo}      = $c->model('Git');
+    $c->stash->{name}      = $name;
+    $c->stash->{template}  = 'repo.tt2';
 }
 
 sub member : Path('/member') : ActionClass('REST') {

@@ -1,1 +1,9 @@
 <h2>[% name %]</h2>
+<h3>Log</h3>
+<div style="overflow: scroll; height: 50ex; width: 78ex;">
+<pre>
+[% FOR line IN repo.command('log') -%]
+[% line %]
+[% END -%]
+</pre>
+</div>

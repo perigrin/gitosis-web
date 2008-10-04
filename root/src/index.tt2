@@ -3,9 +3,9 @@
 <ul>
     <li>repo:
     [% FOR repo IN group.writable %]
-       <!-- <a href="[% c.uri_for('/repo', repo) %]"> -->
+       <a href="[% c.uri_for('/repo', repo) %]">
            [% repo %]
-       <!-- </a> -->
+       </a>
     [% END %]
     </li>
     <li>members:        
