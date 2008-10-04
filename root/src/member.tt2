@@ -1,6 +1,6 @@
 [% USE Wrap %]
 <h2>[% name %]</h2>
 <form action="" method="POST">
-<textarea class="edit_area" name="member.key">[% key | wrap(80, '', '') %]</textarea>
+<textarea class="edit_area" style="width: 80ex" name="member.key">[% key %]</textarea>
 <br><input type="submit">
 </form>

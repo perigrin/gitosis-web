@@ -1,5 +1,5 @@
 package Gitosis::Web::Model::Git;
-use base 'Catalyst::Model::Factory::PerRequest';
+use base 'Catalyst::Model::Factory';
 __PACKAGE__->config(
     class       => 'Git',
     constructor => 'repository',

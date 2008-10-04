@@ -28,7 +28,7 @@ Gitosis::Web::Controller::Root - Root Controller for Gitosis::Web
 
 sub default : Private {
     my ( $self, $c ) = @_;
-    $c->stash->{gitosis}  = $c->model('Config');
+    $c->stash->{gitosis}  = $c->model('GitosisConfig');
     $c->stash->{template} = 'index.tt2';
 }
 
@@ -53,7 +53,7 @@ sub member_GET {
 sub member_POST {
     my ( $self, $c, $name ) = @_;
     if ( my $key = $c->request->param('member.key') ) {
-        die $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
     }
     $c->res->redirect( $c->uri_for( '/member', $name ) );
 }
@@ -64,21 +64,27 @@ sub group : Path('/group') : ActionClass('REST') {
 sub group_GET {
     my ( $self, $c, $name ) = @_;
     ( $c->stash->{group} ) =
-      grep { $_->name eq $name } @{ $c->model('Config')->groups };
+      grep { $_->name eq $name } @{ $c->model('GitosisConfig')->groups };
 
     $c->stash->{template} = 'group.tt2';
 }
 
 sub group_POST {
     my ( $self, $c, $name ) = @_;
-    my ($group) = grep { $_->name eq $name } @{ $c->model('Config')->groups };
-    if ( my $repos = $c->request->param('group.repos') ) {
-        $group->writable($repos);
-        $c->model('Config')->save;
-    }
-    if ( my $members = $c->request->param('group.members') ) {
-        $group->members($members);
-        $c->model('Config')->save;
+    for my $group ( @{ $c->model('GitosisConfig')->groups } ) {
+        next unless $group->name eq $name;
+        if ( my $repos = $c->request->param('group.repos') ) {
+            $group->writable($repos);
+            $c->model('GitosisConfig')->save;
+            $c->model('GitosisRepo')->command('commit', '-am', "update writeable to $repos");
+            $c->model('GitosisRepo')->command('push');
+        }
+        if ( my $members = $c->request->param('group.members') ) {
+            $group->members($members);
+            $c->model('GitosisConfig')->save;
+            $c->model('GitosisRepo')->command('commit', '-am', "update members to $members");
+            $c->model('GitosisRepo')->command('push');
+        }
     }
     $c->res->redirect( $c->uri_for( '/group', $name ) );
 }
