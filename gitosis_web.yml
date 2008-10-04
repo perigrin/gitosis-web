@@ -5,7 +5,7 @@ Model::GitosisConfig:
        file: /Users/perigrin/dev/gitosis-admin/gitosis.conf
 Model::GitosisRepo:
       args:
-        Repository: /Users/perigrin/dev/gitosis-admin/.git
+        Directory: /Users/perigrin/dev/gitosis-admin/
 Model::SSHKeys:
       root_dir: /Users/perigrin/dev/gitosis-admin/keydir
     

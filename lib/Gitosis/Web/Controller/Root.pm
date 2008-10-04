@@ -71,20 +71,23 @@ sub group_GET {
 
 sub group_POST {
     my ( $self, $c, $name ) = @_;
-    for my $group ( @{ $c->model('GitosisConfig')->groups } ) {
-        next unless $group->name eq $name;
+
+    if ( $c->request->params() ) {
+        my $cfg = $c->model('GitosisConfig');
+        my ($group) =
+          grep { $_->name eq $name } @{ $cfg->groups };
+
         if ( my $repos = $c->request->param('group.repos') ) {
             $group->writable($repos);
-            $c->model('GitosisConfig')->save;
-            $c->model('GitosisRepo')->command('commit', '-am', "update writeable to $repos");
-            $c->model('GitosisRepo')->command('push');
         }
         if ( my $members = $c->request->param('group.members') ) {
             $group->members($members);
-            $c->model('GitosisConfig')->save;
-            $c->model('GitosisRepo')->command('commit', '-am', "update members to $members");
-            $c->model('GitosisRepo')->command('push');
         }
+        $cfg->save;
+
+        my $repo = $c->model('GitosisRepo');
+        $repo->command( 'commit', '-am', 'update from gitweb' );
+        $repo->command('push');
     }
     $c->res->redirect( $c->uri_for( '/group', $name ) );
 }
