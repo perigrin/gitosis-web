@@ -92,16 +92,16 @@ sub group_POST {
     $c->res->redirect( $c->uri_for( '/group', $name ) );
 }
 
-# sub openid : Path('/login') {
-#     my ( $self, $c ) = @_;
-#     if ( $c->authenticate() ) {
-#         $c->flash( message => "You signed in with OpenID!" );
-#         $c->res->redirect( $c->uri_for('/') );
-#     }
-#     else {
-#         $c->stash->{template} = 'login.tt2';
-#     }
-# }
+sub openid : Path('/login') {
+    my ( $self, $c ) = @_;
+    if ( $c->authenticate() ) {
+        $c->flash( message => "You signed in with OpenID!" );
+        $c->res->redirect( $c->uri_for('/') );
+    }
+    else {
+        $c->stash->{template} = 'login.tt2';
+    }
+}
 
 =head2 end
 

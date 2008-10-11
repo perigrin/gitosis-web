@@ -1,5 +1,14 @@
+<div style="margin-bottom: 1em">
+    <h2 style="display:inline">G<span style="font-size: 10pt">ROUPS</span></h2> 
+    [<a href="[% c.uri_for('/group/add')%]">add group</a>]
+</div>
+
 [% FOR group IN gitosis.groups %]
-<h2>[% group.name %]</h2>
+<div class="span-24 container">
+<h3 class="span-5" style="display:inline">[% group.name %]</h3>
+<span>[<a href="[% c.uri_for('/group', group.name, '/del') %]">delete</a>]</span>
+<span>[<a href="[% c.uri_for('/group', group.name) %]">edit</a>]</span>
+</div>
 <ul>
     <li>repo:
     [% FOR repo IN group.writable %]
@@ -14,6 +23,6 @@
         [% END %]        
         </li>
 </ul>
-<span>[<a href="[% c.uri_for('/group', group.name) %]">edit</a>]</span>
+
 <hr class="space" />
 [% END %]

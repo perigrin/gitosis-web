@@ -5,6 +5,8 @@
   <link rel="stylesheet" href="/static/style/screen.css" type="text/css" media="screen, projection">
   <link rel="stylesheet" href="/static/style/print.css" type="text/css" media="print"> <br />
   <!--[if IE]><link rel="stylesheet" href="/static/style/ie.css" type="text/css" media="screen, projection"><![endif]-->
+  
+  <!-- <script src="/static/js/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script> -->
  </head>
  <body>
 <div class="container">
