@@ -61,6 +61,12 @@ sub member_POST {
 sub group : Path('/group') : ActionClass('REST') {
 }
 
+sub group_add : Path('/group/add') {
+    my ( $self, $c, $name ) = @_;
+    $c->stash->{group} = { name => $name };
+    $c->stash->{template} = 'group.tt2';
+}
+
 sub group_GET {
     my ( $self, $c, $name ) = @_;
     ( $c->stash->{group} ) =
