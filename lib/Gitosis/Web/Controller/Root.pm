@@ -54,8 +54,9 @@ sub member_POST {
     my ( $self, $c, $name ) = @_;
     if ( my $key = $c->request->param('member.key') ) {
         $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect( $c->uri_for( '/member', $name ) );
     }
-    $c->res->redirect( $c->uri_for( '/member', $name ) );
+    die 'Missing Request Data';    # Throw the correct error here
 }
 
 sub group : Path('/group') : ActionClass('REST') {
@@ -77,25 +78,17 @@ sub group_GET {
 
 sub group_POST {
     my ( $self, $c, $name ) = @_;
+    if ( my $data = { $c->request->params() } ) {
+        my $group =
+          defined $name
+          ? $c->add_group( $data->{'group.name'} => $data )
+          : $c->update_group( $name => $data );
 
-    if ( $c->request->params() ) {
-        my $cfg = $c->model('GitosisConfig');
-        my ($group) =
-          grep { $_->name eq $name } @{ $cfg->groups };
-
-        if ( my $repos = $c->request->param('group.repos') ) {
-            $group->writable($repos);
-        }
-        if ( my $members = $c->request->param('group.members') ) {
-            $group->members($members);
-        }
-        $cfg->save;
-
-        my $repo = $c->model('GitosisRepo');
-        $repo->command( 'commit', '-am', 'update from gitweb' );
-        $repo->command('push');
+        #        $c->save_repo();
+        die $group->dump;
+        return $c->res->redirect( $c->uri_for( '/group', $group->name ) );
     }
-    $c->res->redirect( $c->uri_for( '/group', $name ) );
+    die 'Missing Request Data';    # Throw the correct error here
 }
 
 sub openid : Path('/login') {

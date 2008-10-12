@@ -1,17 +1,7 @@
 package Gitosis::Web;
-
-use strict;
-use warnings;
-
+our $VERSION = '0.01';
+use Moose;
 use Catalyst::Runtime '5.70';
-
-# Set flags and add plugins for the application
-#
-#         -Debug: activates the debug mode for very useful log messages
-#   ConfigLoader: will load the configuration from a YAML file in the
-#                 application's home directory
-# Static::Simple: will serve static files from the application's root
-#                 directory
 
 use Catalyst qw(
   -Debug
@@ -26,7 +16,17 @@ use Catalyst qw(
   Unicode
 );
 
-our $VERSION = '0.01';
+has gitweb_engine => (
+    isa        => 'Gitosis::Web::Engine',
+    is         => 'ro',
+    lazy_build => 1,
+    handles    => [qw(add_group update_group save_repo)],
+);
+
+sub _build_gitweb_engine {
+    require Gitosis::Web::Engine;
+    return Gitosis::Web::Engine->new( app => $_[0] );
+}
 
 # Configure the application.
 #
@@ -53,13 +53,12 @@ __PACKAGE__->config(
                     store => { class => "OpenID", },
                 },
             },
-    
+
         },
     },
 
 );
 
-# Start the application
 __PACKAGE__->setup;
 
 =head1 NAME
