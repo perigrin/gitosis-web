@@ -7,17 +7,29 @@ has app => (
     handles => [qw(model)],
 );
 
+sub find_group_by_name {
+    shift->model('GitosisConfig')->find_group_by_name(@_);
+}
+
 sub add_group {
-    my ( $self, $name, $data ) = @_;
+    my ( $self, $data ) = @_;
+
     my $cfg = $self->model('GitosisConfig');
-    if ( my $group = $cfg->find_group_by_name($name) ) {
+    if ( my $group = $cfg->find_group_by_name( $data->{'group.name'} ) ) {
         warn 'Group exists';
         return $group;
     }
 
-    $cfg->add_group( { name => $name } );
+    $cfg->add_group(
+        {
+            name     => $data->{'group.name'},
+            writable => $data->{'group.writable'},
+            members  => $data->{'group.members'},
+        }
+    );
+
     $cfg->save;
-    return $cfg->lookup_group_by_name($name);
+    return $cfg->find_group_by_name( $data->{'group.name'} );
 }
 
 sub update_group {
@@ -26,8 +38,9 @@ sub update_group {
     my $cfg   = $self->model('GitosisConfig');
     my $group = $cfg->find_group_by_name($name);
 
-    $group->name( $data->{'group.name'} )     if exists $$data{'group.name'};
-    $group->writable( $$data{'group.repos'} ) if exists $$data{'group.repos'};
+    $group->name( $data->{'group.name'} ) if exists $$data{'group.name'};
+    $group->writable( $$data{'group.writable'} )
+      if exists $$data{'group.writable'};
     $group->members( $data->{'group.members'} )
       if exists $$data{'group.members'};
 

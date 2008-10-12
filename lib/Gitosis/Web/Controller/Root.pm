@@ -59,38 +59,6 @@ sub member_POST {
     die 'Missing Request Data';    # Throw the correct error here
 }
 
-sub group : Path('/group') : ActionClass('REST') {
-}
-
-sub group_add : Path('/group/add') {
-    my ( $self, $c, $name ) = @_;
-    $c->stash->{group} = { name => $name };
-    $c->stash->{template} = 'group.tt2';
-}
-
-sub group_GET {
-    my ( $self, $c, $name ) = @_;
-    ( $c->stash->{group} ) =
-      grep { $_->name eq $name } @{ $c->model('GitosisConfig')->groups };
-
-    $c->stash->{template} = 'group.tt2';
-}
-
-sub group_POST {
-    my ( $self, $c, $name ) = @_;
-    if ( my $data = { $c->request->params() } ) {
-        my $group =
-          defined $name
-          ? $c->add_group( $data->{'group.name'} => $data )
-          : $c->update_group( $name => $data );
-
-        #        $c->save_repo();
-        die $group->dump;
-        return $c->res->redirect( $c->uri_for( '/group', $group->name ) );
-    }
-    die 'Missing Request Data';    # Throw the correct error here
-}
-
 sub openid : Path('/login') {
     my ( $self, $c ) = @_;
     if ( $c->authenticate() ) {
