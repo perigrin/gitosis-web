@@ -2,6 +2,7 @@ package Gitosis::Web::View::TT::Alloy;
 
 use strict;
 use base 'Catalyst::View::TT::Alloy';
+use Gitosis::Web;
 
 __PACKAGE__->config(
     {
