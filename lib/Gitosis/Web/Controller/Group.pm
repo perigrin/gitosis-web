@@ -28,7 +28,7 @@ sub group_GET {
 sub group_POST {
     my ( $self, $c, $name ) = @_;
 
-    # we're updating POST should have been PUT
+    # we're updating POST should have been sent as PUT
     return $self->group_PUT( $c, $name )
       if ( defined $name && $c->find_group_by_name($name) );
 
@@ -36,7 +36,6 @@ sub group_POST {
         $data->{'group.name'} ||= $name if defined $name;
 
         my $group = $c->add_group($data);
-        die $group->dump;
 
         return $self->save_repo_and_redirect(
             $c => $c->uri_for( '/group', $group->name ) );
