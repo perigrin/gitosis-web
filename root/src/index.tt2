@@ -6,7 +6,7 @@
 [% FOR group IN gitosis.groups %]
 <div class="span-24 container">
 <h3 class="span-5" style="display:inline">[% group.name %]</h3>
-<span>[<a href="[% c.uri_for('/group', group.name, 'del') %]">delete</a>]</span>
+<!-- <span>[<a href="[% c.uri_for('/group', group.name, 'del') %]">delete</a>]</span> -->
 <span>[<a href="[% c.uri_for('/group', group.name) %]">edit</a>]</span>
 </div>
 <ul>

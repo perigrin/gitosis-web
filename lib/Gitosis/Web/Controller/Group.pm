@@ -28,7 +28,7 @@ sub group_GET {
 sub group_POST {
     my ( $self, $c, $name ) = @_;
 
-    # we're updating POST should have been sent as PUT
+    # we're updating, POST should have been sent as PUT
     return $self->group_PUT( $c, $name )
       if ( defined $name && $c->find_group_by_name($name) );
 
