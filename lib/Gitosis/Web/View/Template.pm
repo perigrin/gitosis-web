@@ -1,4 +1,4 @@
-package Gitosis::Web::View::TT::Alloy;
+package Gitosis::Web::View::Template;
 
 use strict;
 use base 'Catalyst::View::TT::Alloy';
