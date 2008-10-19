@@ -21,8 +21,12 @@ sub member : Path('/member') : ActionClass('REST') {
 
 sub member_GET {
     my ( $self, $c, $name ) = @_;
-    $c->stash->{name}     = $name;
-    $c->stash->{key}      = $c->model('SSHKeys')->slurp("$name.pub");
+    my $key = $c->model('SSHKeys')->slurp("$name.pub");
+    warn $key;
+    $c->stash->{member} = {
+        name => defined $key ? $name : undef,
+        key => $key,
+    };
     $c->stash->{template} = 'member.tt2';
 }
 
@@ -35,10 +39,11 @@ sub member_POST {
     }
 
     if ( my $data = $c->request->params() ) {
-        my $key = $data->{'member.key'};
-        my $name = $name || $data->{'memeber.name'};
+        my $key = $data->{'member.key'} or die "Missing Key";
+        my $name = $name || $data->{'member.name'} or die "Missing Name";
         $c->model('SSHKeys')->splat( "$name.pub", $key );
         $c->res->redirect( $c->uri_for( '/member', $name ) );
+        return;
     }
 
     die 'Missing Request Data';    # Throw the correct error here

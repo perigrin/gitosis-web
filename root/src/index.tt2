@@ -1,6 +1,7 @@
 <div style="margin-bottom: 1em">
     <h2 style="display:inline">G<span style="font-size: 10pt">ROUPS</span></h2> 
     [<a href="[% c.uri_for('/group/add')%]">add group</a>]
+    [<a href="[% c.uri_for('/member/add')%]">add member</a>]
 </div>
 
 [% FOR group IN gitosis.groups %]
