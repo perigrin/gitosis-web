@@ -31,30 +31,30 @@ sub member_POST {
 
     if ( defined $name ) {
         $self->member_PUT( $c, $name )
-          if grep { $_ eq $name } $c->model('SSHKeys') )->list;
+          if grep { $_ eq $name } $c->model('SSHKeys')->list;
     }
 
     if ( my $data = $c->request->params() ) {
-          my $key = $data->{'member.key'};
-          my $name = $name || $data->{'memeber.name'};
-          $c->model('SSHKeys')->splat( "$name.pub", $key );
-          $c->res->redirect( $c->uri_for( '/member', $name ) );
+        my $key = $data->{'member.key'};
+        my $name = $name || $data->{'memeber.name'};
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect( $c->uri_for( '/member', $name ) );
     }
 
     die 'Missing Request Data';    # Throw the correct error here
 }
 
 sub member_PUT {
-      my ( $self, $c, $name ) = @_;
-      die 'PUT requires name' unless $name;
+    my ( $self, $c, $name ) = @_;
+    die 'PUT requires name' unless $name;
 
-      if ( my $data = $c->request->params() ) {
-          my $key = $data->{'member.key'};
-          $c->model('SSHKeys')->splat( "$name.pub", $key );
-          $c->res->redirect( $c->uri_for( '/member', $name ) );
-      }
+    if ( my $data = $c->request->params() ) {
+        my $key = $data->{'member.key'};
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect( $c->uri_for( '/member', $name ) );
+    }
 
-      die 'Missing Request Data';    # Throw the correct error here
+    die 'Missing Request Data';    # Throw the correct error here
 }
 
 sub member_DELETE { }
