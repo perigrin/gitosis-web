@@ -2,5 +2,5 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-BEGIN { use_ok 'Gitosis::Web::View::TT::Alloy' }
+BEGIN { use_ok 'Gitosis::Web::View::Template' }
 
