@@ -33,9 +33,9 @@ sub group_POST {
       if ( defined $name && $c->find_group_by_name($name) );
 
     if ( my $data = $c->request->params() ) {
-        $data->{'group.name'} ||= $name if defined $name;
+        $name ||= $data->{'group.name'};
 
-        my $group = $c->add_group($data);
+        my $group = $c->add_group( $name => $data );
 
         return $self->save_repo_and_redirect(
             $c => $c->uri_for( '/group', $group->name ) );
