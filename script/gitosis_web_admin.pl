@@ -3,10 +3,6 @@
 use strict;
 use warnings;
 
-use lib qw(
-  /usr/share/perl5/
-);
-
 use FindBin;
 use FCGI::Engine::Manager;
 
