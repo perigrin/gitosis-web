@@ -34,7 +34,7 @@ sub default : Private {
 
 sub repo : Path('/repo') {
     my ( $self, $c, $name ) = @_;
-    $c->stash->{repo_path} = "${ \$c->config->{repos} }/$name.git";
+    $c->stash->{repo_path} = "/Users/perigrin/dev/$name/.git";
     $c->stash->{repo}      = $c->model('Git');
     $c->stash->{name}      = $name;
     $c->stash->{template}  = 'repo.tt2';

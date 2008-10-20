@@ -22,6 +22,7 @@ sub member : Path('/member') : ActionClass('REST') {
 sub member_GET {
     my ( $self, $c, $name ) = @_;
     my $key = $c->model('SSHKeys')->slurp("$name.pub");
+    warn $key;
     $c->stash->{member} = {
         name => defined $key ? $name : undef,
         key => $key,

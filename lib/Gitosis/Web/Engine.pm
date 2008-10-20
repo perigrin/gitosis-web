@@ -51,8 +51,8 @@ sub update_group {
 sub save_repo {
     my ($self) = @_;
     my $repo = $self->model('GitosisRepo');
-    $repo->commit( all => 1, message => 'update from gitweb' );
-    $repo->push();
+    $repo->command( 'commit', '-am', 'update from gitweb' );
+    $repo->command('push');
 }
 
 no Moose;

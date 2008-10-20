@@ -2,7 +2,6 @@
     
 [% IF group.name %]
     <h2>[% group.name %]</h2>
-    <input type="hidden" name="group.name" value="[% group.name %]" />
 [% ELSE %]
 <div style="margin-bottom: 1em"><input type="text" style="font-size: 14pt" name="group.name" style="width: 80ex" value="[% group.name %]"/></div>
 [% END %]
