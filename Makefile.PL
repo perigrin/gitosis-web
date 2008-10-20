@@ -15,7 +15,7 @@ requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Model::File';
 requires 'Catalyst::View::TT::Alloy';
 requires 'Template::Alloy';
-requires 'Gitosis::Config' => '0.0.3';
+requires 'Gitosis::Config' => '0.0.4';
 requires 'YAML';    # This should reflect the config file format you've chosen
                     # See Catalyst::Plugin::ConfigLoader for supported formats
 catalyst;
