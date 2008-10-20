@@ -7,6 +7,8 @@ use lib qw(
   /usr/share/perl5/
 );
 
+$ENV{PERL5LIB} = "$ENV{PERL5LIB}:/usr/share/perl5";
+
 use FindBin;
 use FCGI::Engine::Manager;
 
