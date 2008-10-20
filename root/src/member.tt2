@@ -3,6 +3,7 @@
 <form action="[% c.uri_for('/member') %]" method="POST">
 [% IF member.name %]
     <h2>[% member.name %]</h2>
+    <input type="hidden" name="member.name" value="[% member.name %]" />
 [% ELSE %]
 <div style="margin-bottom: 1em"><input type="text" style="font-size: 14pt" name="member.name" style="width: 80ex" value="[% member.name %]"/></div>
 [% END %]
