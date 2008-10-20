@@ -1,5 +1,6 @@
 ---
 name: Gitosis::Web
+repos: /home/git/repositories
 Model::GitosisConfig:
      args:
        file: /var/gitosis-admin/gitosis.conf
