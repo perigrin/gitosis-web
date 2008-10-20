@@ -1,5 +1,0 @@
-- name:       "gitosis-web"
-  scriptname: "script/gitosis_web_fastcgi.pl"
-  nproc:       3
-  pidfile:    "/tmp/gitosis.prather.org.pid"
-  socket:     "/tmp/gitosis.prather.org.socket"
