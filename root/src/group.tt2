@@ -1,4 +1,4 @@
-<form method="POST" action="[% c.uri_for('/group') %]">
+<form method="POST" action="[% c.uri_for('/group', group.name) %]">
     
 [% IF group.name %]
     <h2>[% group.name %]</h2>
