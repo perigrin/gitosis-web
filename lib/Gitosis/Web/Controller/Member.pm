@@ -21,8 +21,12 @@ sub member : Path('/member') : ActionClass('REST') {
 
 sub member_GET {
     my ( $self, $c, $name ) = @_;
-    $c->stash->{name}     = $name;
-    $c->stash->{key}      = $c->model('SSHKeys')->slurp("$name.pub");
+    my $key = $c->model('SSHKeys')->slurp("$name.pub");
+    warn $key;
+    $c->stash->{member} = {
+        name => defined $key ? $name : undef,
+        key => $key,
+    };
     $c->stash->{template} = 'member.tt2';
 }
 
@@ -31,30 +35,31 @@ sub member_POST {
 
     if ( defined $name ) {
         $self->member_PUT( $c, $name )
-          if grep { $_ eq $name } $c->model('SSHKeys') )->list;
+          if grep { $_ eq $name } $c->model('SSHKeys')->list;
     }
 
     if ( my $data = $c->request->params() ) {
-          my $key = $data->{'member.key'};
-          my $name = $name || $data->{'memeber.name'};
-          $c->model('SSHKeys')->splat( "$name.pub", $key );
-          $c->res->redirect( $c->uri_for( '/member', $name ) );
+        my $key = $data->{'member.key'} or die "Missing Key";
+        my $name = $name || $data->{'member.name'} or die "Missing Name";
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect( $c->uri_for( '/member', $name ) );
+        return;
     }
 
     die 'Missing Request Data';    # Throw the correct error here
 }
 
 sub member_PUT {
-      my ( $self, $c, $name ) = @_;
-      die 'PUT requires name' unless $name;
+    my ( $self, $c, $name ) = @_;
+    die 'PUT requires name' unless $name;
 
-      if ( my $data = $c->request->params() ) {
-          my $key = $data->{'member.key'};
-          $c->model('SSHKeys')->splat( "$name.pub", $key );
-          $c->res->redirect( $c->uri_for( '/member', $name ) );
-      }
+    if ( my $data = $c->request->params() ) {
+        my $key = $data->{'member.key'};
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect( $c->uri_for( '/member', $name ) );
+    }
 
-      die 'Missing Request Data';    # Throw the correct error here
+    die 'Missing Request Data';    # Throw the correct error here
 }
 
 sub member_DELETE { }
