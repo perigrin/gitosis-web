@@ -2,9 +2,10 @@ package Gitosis::Web::Model::SSHKeys;
 
 use strict;
 use base 'Catalyst::Model::File';
+use Cwd;
 
 __PACKAGE__->config(
-    root_dir => '/Users/perigrin/dev/gitosis-admin/keydir',
+    root_dir => getcwd . '/projects/gitosis-admin/keydir',
 );
 
 =head1 NAME
