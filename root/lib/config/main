@@ -17,8 +17,8 @@
    };
 
    # load up any other configuration items 
-   PROCESS config/col
-         + config/url;
+   PROCESS lib/config/col
+         + lib/config/url;
 
    # set defaults for variables, etc.
    DEFAULT 

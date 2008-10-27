@@ -1,27 +1,12 @@
-<div style="margin-bottom: 1em">
-    <h2 style="display:inline">G<span style="font-size: 10pt">ROUPS</span></h2> 
-    [<a href="[% c.uri_for('/group/add')%]">add group</a>]
-    [<a href="[% c.uri_for('/member/add')%]">add member</a>]
+<div id="RootWelcomeContainer">
+    <div class="LeftBox">
+        <h3>Create a new project</h3>
+        <p>Creating a new project is very easy.  Simply log in or register an account, and  fill out one simple form</p>
+        <a href="/project/create" class="BigButton">Create A Project</a>
+    </div>
+    <div class="RightBox">
+        <h3>Find a current project</h3>
+        <p>Blah blah blah blah Find your project, search, list, browse, whatever.</p>
+        <a href="/project" class="BigButton">Find A Project</a>
+    </div>
 </div>
-
-[% FOR group IN gitosis.groups %]
-<div class="span-24 container">
-<h3 class="span-5" style="display:inline">[% group.name %]</h3>
-<!-- <span>[<a href="[% c.uri_for('/group', group.name, 'del') %]">delete</a>]</span> -->
-<span>[<a href="[% c.uri_for('/group', group.name) %]">edit</a>]</span>
-</div>
-<ul>
-    <li>repo:
-    [% FOR repo IN group.writable %]
-        <a href="[% c.uri_for('/repo', repo) %]">[% repo %]</a>&nbsp;       
-    [% END %]
-    </li>
-    <li>members:        
-        [% FOR member IN group.members %]
-        <a href="[% c.uri_for('/member', member) %]">[% member %]</a>&nbsp;
-        [% END %]        
-        </li>
-</ul>
-
-<hr class="space" />
-[% END %]

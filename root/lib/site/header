@@ -1,8 +1,14 @@
-<!-- BEGIN site/header -->
-<h1>Gitosis Web</h1>
-<div>
-    <span><a href="/">Home</a></span>
-    <!-- <span><a href="/login">Login</a></span> -->
+<!-- BEGIN lib/site/header -->
+<div id="PageHeader">
+    <ul class="LoginBar">
+        <li><a href="/">Home</a></li>
+        <li><a href="/project">Projects</a></li>
+        <li><a href="/search">Search</a></li>
+        <li class="account_left"><a href="/signup">Sign Up</a></li><li class="account_right"><a href="/login">Login</a></li>
+    </ul>
+    <h1><a href="/">Gitosis Web</a></h1>
+[% IF project %]
+    <h2><a href="[% c.uri_for('/project', project.name) %]">[% project.name %]</a></h2>
+[% END %]
 </div>
-<hr class="space" />
-<!-- END site/header -->
+<!-- END lib/site/header -->

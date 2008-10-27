@@ -14,6 +14,7 @@ use Catalyst qw(
   Session::State::Cookie
 
   Unicode
+  I18N
 );
 
 has gitweb_engine => (
@@ -26,6 +27,7 @@ has gitweb_engine => (
           update_group
           find_group_by_name
           save_repo
+          maketext
           )
     ],
 );
@@ -46,7 +48,9 @@ sub _build_gitweb_engine {
 
 __PACKAGE__->config(
     name    => 'Gitosis::Web',
-    static  => { dirs => [qw(static/html static/css static/images static/js)] },
+    static  => {
+        dirs => [qw( static )]
+    },
     session => {},
 
     authentication => {

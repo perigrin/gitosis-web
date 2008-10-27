@@ -8,13 +8,13 @@ __PACKAGE__->config(
     {
         CATALYST_VAR => 'c',
         INCLUDE_PATH => [
-            Gitosis::Web->path_to( 'root', 'src' ),
-            Gitosis::Web->path_to( 'root', 'lib' )
+            Gitosis::Web->path_to( 'root' ),
         ],
-        PRE_PROCESS  => 'config/main',
-        WRAPPER      => 'site/wrapper',        
-        ERROR => 'error.tt2',
-        TIMER => 0
+        PRE_PROCESS  => 'lib/config/main',
+        WRAPPER      => 'lib/site/wrapper',        
+        ERROR => 'error.tmpl',
+        TIMER => 0,
+        TEMPLATE_EXTENSION => '.html',
     }
 );
 

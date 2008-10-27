@@ -7,6 +7,7 @@ requires 'Catalyst::Runtime' => '5.7014';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::Unicode';
+requires 'Catalyst::Plugin::I18N';
 requires 'Catalyst::Plugin::Session::Store::FastMmap';
 requires 'Catalyst::Plugin::Authentication::Credential::OpenID';
 requires 'Catalyst::Action::RenderView';

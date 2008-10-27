@@ -1,3 +1,26 @@
 <!-- BEGIN site/footer -->
-<div id="copyright">&copy; [% site.copyright %]</div>
+<div id="PageFooter">
+    <div id="PageFooterContent">
+        <ul class="FooterList LeftColumn">
+            <li><a href="/help/how_to_use">How to use Gitosis Web</a></li>
+            <li><a href="/help/how_to_use_git">How to use Git</a></li>
+            <li><a href="/help/faq">FAQ</a></li>
+        </ul>
+        <div class="FooterList RightColumn">
+            <form action="/search" class="searchbox">
+                <label for="search_box">Search</label>
+                <input type="search_box"/>
+            </form>
+            <div class="copyright">Copyright &copy; [% site.copyright %]</div>
+        </div>
+        <ul class="FooterInfo MiddleColumn">
+            <li><a href="/help/about">About Gitosis Web</a></li>
+            <li><a href="/help/license">License &amp; Copyright</a></li>
+            <li><a href="/help/aboutserver">About this Gitosis Web server</a></li>
+        </ul>
+    </div>
+    <div id="PageFooterHidebar">
+        Hide / Show
+    </div>
+</div>
 <!-- END site/footer -->

@@ -3,6 +3,6 @@
      content;
    ELSE;
      debug("Applying HTML page layout wrappers to $template.name\n");
-     content WRAPPER site/html + site/layout;
+     content WRAPPER lib/site/html + lib/site/layout;
    END;
 -%]

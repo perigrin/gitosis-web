@@ -10,12 +10,12 @@ Gitosis::Web::Controller::Help - Catalyst Controller
 
 =head1 DESCRIPTION
 
-Catalyst Controller.
+Controller dispatcher to serve help pages.  C<root/help/*.html> are automatically served
+based on the URI arguments.
 
 =head1 METHODS
 
 =cut
-
 
 =head2 index 
 
@@ -27,6 +27,8 @@ sub index : Private {
 
 
 =head2 default 
+
+Default dispatch handler that serves static HTML help documents.
 
 =cut
 

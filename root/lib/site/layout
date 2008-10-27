@@ -1,3 +1,12 @@
-<div id="header" class="span-30">[% PROCESS site/header %]</div>
-[% content %]
-<div id="footer" class="span-20">[% PROCESS site/footer %]</div>
+[% PROCESS lib/site/header %]
+<div id="PageBody">
+    [% IF project %]
+    <ul class="NavigationBar">
+        <li class="[% navbar.classes.project %]"><a href="[% c.uri_for('/project', project.name) %]">Project Information</a></li>
+        <li class="[% navbar.classes.users %]"><a href="[% c.uri_for('/project', project.name, 'users') %]">Users &amp; Groups</a></li>
+        <li class="[% navbar.classes.history %]"><a href="[% c.uri_for('/project', project.name, 'history') %]">History</a></li>
+    </ul>
+    [% END %]
+    <div id="PageBodyContent">[% content %]</div>
+</div>
+[% PROCESS lib/site/footer %]

@@ -40,9 +40,9 @@ sub update_group {
 
     $group->name( $data->{'group.name'} ) if exists $$data{'group.name'};
     $group->writable( $$data{'group.writable'} )
-      if exists $$data{'group.writable'};
+        if exists $$data{'group.writable'};
     $group->members( $data->{'group.members'} )
-      if exists $$data{'group.members'};
+        if exists $$data{'group.members'};
 
     $cfg->save;
     return $group;

@@ -1,2 +1,7 @@
 <div id="UserList">
+    <ul>
+        [% FOR member IN project.members %]
+        <li><a href="[% c.uri_for('/project', project.name, 'users', member) %]">[% member %]</a></li>
+        [% END %]        
+    </ul>
 </div>
