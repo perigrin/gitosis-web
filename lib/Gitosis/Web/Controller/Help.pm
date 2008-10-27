@@ -26,6 +26,16 @@ sub index : Private {
 }
 
 
+=head2 default 
+
+=cut
+
+sub default : Private {
+    my ( $self, $c ) = @_;
+    $c->stash->{template} = join("/", @{ $c->req->args }) . ".html";
+}
+
+
 =head1 AUTHOR
 
 Michael Nachbaur,,,
