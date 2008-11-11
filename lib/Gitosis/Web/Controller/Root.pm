@@ -5,31 +5,22 @@ use warnings;
 use base 'Catalyst::Controller';
 use Cwd;
 
-#
-# Sets the actions in this controller to be registered with no prefix
-# so they function identically to actions created in MyApp.pm
-#
-__PACKAGE__->config->{namespace} = '';
-
-=head1 NAME
-
-Gitosis::Web::Controller::Root - Root Controller for Gitosis::Web
-
-=head1 DESCRIPTION
-
-[enter your description here]
-
-=head1 METHODS
-
-=cut
-
-=head2 default
-
-=cut
+__PACKAGE__->config(
+    'namespace' => '',
+    'default'   => 'text/x-json',
+    'stash_key' => 'rest',
+    'map'       => {
+        'text/html'          => [ 'View', 'Template', ],
+        'text/x-yaml'        => 'YAML',
+        'text/x-json'        => 'JSON',
+        'text/x-data-dumper' => [ 'Data::Serializer', 'Data::Dumper' ],
+    },
+);
 
 sub auto : Private {
     my ( $self, $c ) = @_;
     $c->stash->{gitosis}  = $c->model('GitosisConfig');
+    $c->stash->{browser} = $c->request->browser;
 }
 
 sub index : Private {
@@ -53,28 +44,6 @@ sub login : Global {
     }
 }
 
-=head2 end
-
-Attempt to render a view, if needed.
-
-=cut 
-
-sub end : ActionClass('RenderView') {
-    my ( $self, $c ) = @_;
-    my $view = $c->config->{name} . "::View::Template";
-    $c->forward($view)
-        unless ($c->response->body);
-}
-
-=head1 AUTHOR
-
-Chris Prather
-
-=head1 LICENSE
-
-This library is free software, you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
+sub end : ActionClass('Serialize') {}
 
 1;

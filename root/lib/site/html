@@ -3,14 +3,20 @@
     <head>
         <title>[% template.title or site.title %]</title>
         <link rel="stylesheet" type="text/css" media="screen,projection" href="/static/style/screen.css"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="/static/style/textboxlist.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="/static/style/print.css"/>
         <!--[if IE]><link rel="stylesheet" href="/static/style/ie.css" type="text/css" media="screen,projection"/><![endif]-->
     </head>
-    <body>
+    <body class="Browser_[% browser.browser_string %] Browser_[% browser.browser_string %][% browser.major %]">
         <div id="PageWrapper">[% content %]</div>
         <script language="JavaScript" src="/static/js/clientcide-trunk-596.compressed.js"></script>
         <script language="JavaScript" src="/static/js/mootools-1.2.1-core-compressed.js"></script>
-        <script language="JavaScript" src="/static/js/mootools-1.2-more-compressed_full.js"></script>
+        <script language="JavaScript" src="/static/js/mootools-1.2.1-core-compressed.js"></script>
+        <script language="JavaScript" src="/static/js/textboxlist-compressed.js"></script>
+        <script language="JavaScript" src="/static/js/facebook-list.js"></script>
         <script language="JavaScript" src="/static/js/common.js"></script>
+        [% IF c.widgets.size > 0 %]
+        <script language="JavaScript">[% c.widget_js %]</script>
+        [% END %]
     </body>
 </html>

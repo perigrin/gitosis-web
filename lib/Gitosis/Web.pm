@@ -15,6 +15,7 @@ use Catalyst qw(
 
   Unicode
   I18N
+  Browser
 );
 
 has gitweb_engine => (
@@ -28,6 +29,9 @@ has gitweb_engine => (
           find_group_by_name
           save_repo
           maketext
+          add_widget
+          widgets
+          widget_js
           )
     ],
 );
@@ -57,11 +61,15 @@ __PACKAGE__->config(
         default_realm => 'openid',
         realms        => {
             openid => {
-                ua_args =>
-                  { whitelisted_hosts => [qw/ 127.0.0.1 localhost /], },
+                ua_args => { whitelisted_hosts => [qw/ 127.0.0.1 localhost /] },
                 credential => {
                     class => "OpenID",
                     store => { class => "OpenID", },
+                },
+            },
+            password => {
+                credential => {
+                    class => "Password",
                 },
             },
 

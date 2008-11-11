@@ -34,6 +34,12 @@ sub index : Private {
 sub create : Local {
     my ( $self, $c ) = @_;
     warn "project -> create";
+    $c->add_widget({
+        id    => 'wProjectCreate',
+        class => 'Page_Project_Create',
+        args  => {
+        },
+    });
     if ($c->request->method eq 'POST') {
         my $data = $c->request->params();
         use Data::Dumper;
@@ -115,6 +121,9 @@ sub user_list : PathPart('users') Chained('project') Args(0) {
     my ( $self, $c, $name ) = @_;
     warn "project -> users";
     $c->stash->{navbar}{classes}{users} = "selected";
+    if ($c->req->method eq 'POST') {
+        $self->user_POST($c);
+    }
 }
 
 
@@ -126,10 +135,51 @@ Dispatches the specified user within the current project
 
 =cut
 
-sub user : PathPart('users') Chained('project') Args(1) {
+sub user : PathPart('users') Chained('project') Args(1) ActionClass('REST') {
     my ( $self, $c, $name ) = @_;
     $c->stash->{navbar}{classes}{users} = "selected";
     warn "project -> user ($name)";
+}
+
+sub user_GET {
+    my ( $self, $c, $name ) = @_;
+    warn "GET user ($name)";
+    my $key = $c->model('SSHKeys')->slurp("$name.pub");
+    warn $key;
+    $c->stash->{member} = {
+        name => defined $key ? $name : undef,
+        key => $key,
+    };
+}
+
+sub user_POST {
+    my ( $self, $c, $name ) = @_;
+    warn "POST user ($name)";
+    if (defined $name and grep { $_ eq $name } $c->model('SSHKeys')->list) {
+        $self->user_PUT($c, $name);
+    }
+
+    if (my $data = $c->request->params()) {
+        my $key = $data->{'member.key'} or die "Missing Key";
+        my $name = $name || $data->{'member.name'} or die "Missing Name";
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect($c->req->uri);
+    } else {
+        die 'Missing Request Data';    # Throw the correct error here
+    }
+}
+
+sub user_PUT {
+    my ( $self, $c, $name ) = @_;
+    die 'PUT requires name' unless $name;
+
+    if (my $data = $c->request->params()) {
+        my $key = $data->{'member.key'};
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect($c->req->uri);
+    } else {
+        die 'Missing Request Data';    # Throw the correct error here
+    }
 }
 
 

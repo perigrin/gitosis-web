@@ -1,7 +1,10 @@
 <div id="UserList">
     <ul>
         [% FOR member IN project.members %]
-        <li><a href="[% c.uri_for('/project', project.name, 'users', member) %]">[% member %]</a></li>
+        <li>
+            <div class="UserName"><a href="[% c.uri_for('/project', project.name, 'users', member) %]">[% member %]</a></div>
+        </li>
         [% END %]        
     </ul>
 </div>
+<div class="ListBottom"></div>

@@ -1,36 +1,23 @@
-package Gitosis::Web::Controller::Member;
+package Gitosis::Web::Controller::User;
 
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
 
-=head1 NAME
-
-Gitosis::Web::Controller::Member - Catalyst Controller
-
-=head1 DESCRIPTION
-
-Catalyst Controller.
-
-=head1 METHODS
-
-=cut
-
-sub member : Path('/member') : ActionClass('REST') {
+sub users : Path('/users') : ActionClass('REST') {
 }
 
-sub member_GET {
+sub users_GET {
     my ( $self, $c, $name ) = @_;
     my $key = $c->model('SSHKeys')->slurp("$name.pub");
     warn $key;
-    $c->stash->{member} = {
-        name => defined $key ? $name : undef,
-        key => $key,
-    };
-    $c->stash->{template} = 'member.tt2';
+    #$c->stash->{member} = {
+    #    name => defined $key ? $name : undef,
+    #    key => $key,
+    #};
 }
 
-sub member_POST {
+sub users_POST {
     my ( $self, $c, $name ) = @_;
 
     if ( defined $name ) {
@@ -49,7 +36,7 @@ sub member_POST {
     die 'Missing Request Data';    # Throw the correct error here
 }
 
-sub member_PUT {
+sub users_PUT {
     my ( $self, $c, $name ) = @_;
     die 'PUT requires name' unless $name;
 
@@ -61,18 +48,5 @@ sub member_PUT {
 
     die 'Missing Request Data';    # Throw the correct error here
 }
-
-sub member_DELETE { }
-
-=head1 AUTHOR
-
-Chris Prather
-
-=head1 LICENSE
-
-This library is free software, you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;
