@@ -256,14 +256,13 @@ a.breadcrumb:hover {
 }
 
 .icon {
-    width: 16px;
+    width: 18px;
     height: 16px;
-    background: transparent url(/static/images/silk_iconset.png) no-repeat top left;
     text-indent: -2000px;
     float: left;
 }
 .arrow_left {
-    background-position: -6px -785px;
+    background: transparent url(/static/images/icons/arrow_left.png) no-repeat top left;
 }
 /****************************
  ** Root Index Body styles **
@@ -312,6 +311,7 @@ a.BigButton:hover {
 .buttons {
     height: 30px;
     padding: 4px;
+    clear: both;
 }
 a.button, button {
     display: block;

@@ -61,10 +61,10 @@ __PACKAGE__->config(
         default_realm => 'openid',
         realms        => {
             openid => {
-                ua_args => { whitelisted_hosts => [qw/ 127.0.0.1 localhost /] },
+                ua_args => { whitelisted_hosts => [qw( 127.0.0.1 localhost )] },
                 credential => {
                     class => "OpenID",
-                    store => { class => "OpenID", },
+                    store => { class => "OpenID" },
                 },
             },
             password => {

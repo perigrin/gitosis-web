@@ -38,6 +38,9 @@ sub create : Local {
         id    => 'wProjectCreate',
         class => 'Page_Project_Create',
         args  => {
+            ssh_keys => [
+                grep { /\.pub$/ } map { "$_" } $c->model('SSHKeys')->list
+            ],
         },
     });
     if ($c->request->method eq 'POST') {
@@ -76,7 +79,7 @@ sub project_home : PathPart('project') Chained('/') Args(1) {
     warn "project -> project_home ($name)";
     $c->stash->{project} = $c->find_group_by_name($name);
     $c->stash->{navbar}{classes}{project} = "selected";
-    warn "Project: " . $c->stash->{data};
+    warn "Project: " . $c->stash->{project};
 }
 
 =head2 project 
@@ -181,17 +184,5 @@ sub user_PUT {
         die 'Missing Request Data';    # Throw the correct error here
     }
 }
-
-
-=head1 AUTHOR
-
-Michael Nachbaur,,,
-
-=head1 LICENSE
-
-This library is free software, you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
 
 1;
