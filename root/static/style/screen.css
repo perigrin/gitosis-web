@@ -385,6 +385,25 @@ button img, a img {
     background: transparent url(/static/images/account.png) no-repeat top left;
     height: 50px;
 }
+#UserList #AddUser {
+    position: absolute;
+    z-index: 10;
+    right: 64px;
+    width: inherit;
+    margin: 0;
+    background-color: #e7e7e7;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+.Float {
+    padding-top: 4px !important;
+    visibility: hidden;
+}
+.Float h3 {
+    text-align: center;
+    padding-bottom: 8px;
+}
 
 /********************************
  ** Project Create Body styles **

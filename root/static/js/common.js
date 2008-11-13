@@ -18,8 +18,17 @@ var Page_Project_Create = new Class({
     Extends: PageWidget,
 	Implements: [Options, Events],
     postInitialize: function() {
+        this.formValidator = new FormValidator($('NewProject'));
+
         // init
-        var tlist2 = new FacebookList('members', 'members_list');
+        var memberlist = new FacebookList('members', 'members_list', {separator: ' '});
+        if ($type(this.options['ssh_keys']) == 'array') {
+            var keys = this.options.ssh_keys;
+            for (var i = 0; i < keys.length; i++) {
+                console.log(keys[i]);
+                memberlist.autoFeed(keys[i]);
+            }
+        }
 
         // fetch and feed
         /*

@@ -45,10 +45,8 @@ sub create : Local {
     });
     if ($c->request->method eq 'POST') {
         my $data = $c->request->params();
-        use Data::Dumper;
-        warn Dumper($data);
-        $c->stash->{data} = $data;
-        my $name = $data->{'group.name'};
+        $c->stash->{group} = $data;
+        my $name = $data->{'name'};
         if (!$name) {
             $c->stash->{message} = $c->localize('You need to supply a project name');
             return;
@@ -58,7 +56,7 @@ sub create : Local {
         }
         my $group = $c->add_group($data);
         if ($group) {
-            $c->response->redirect($c->uri_for("/project/name", $group->name));
+            $c->response->redirect($c->uri_for("/project", $group->name));
             return;
         }
     }
