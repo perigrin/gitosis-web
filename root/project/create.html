@@ -1,24 +1,31 @@
-<h3>[% c.localize('Create a New Project') %]</h3>
+<h3>[% c.loc('Create a New Project') %]</h3>
 <p>Creating a new project is simple.  Once you're logged in, all you need to do is define a project name.  That's it, nothing else needs to be done.  Your project is created, and you can begin pushing your git repository to it.</p>
-<p>[% c.localize('If you want to do anything more advanced at this point, simply select the "Settings" tab on your project page to update or change any project settings.') %]</p>
+<p>[% c.loc('If you want to do anything more advanced at this point, simply select the "Settings" tab on your project page to update or change any project settings.') %]</p>
 <form id="NewProject" method="POST">
     <div class="form_line">
-        <label for="name">[% c.localize("Project Name:") %]</label><br/>
+        <label for="name">[% c.loc("Project Name:") %]</label><br/>
         <input type="text" id="name" name="group.name" value="[% group.name %]"/>
     </div>
     <div class="form_line">
-        <label for="writable">Writable:</label><br/>
+        <label for="writable">[% c.loc('Writable:') %]</label><br/>
         <input type="text" id="writable" name="group.writable" value="[% FOR repo IN group.writable %][% repo %] [% END %]"/>
     </div>
     <div class="form_line">
-        <label for="members">Members:</label><br/>
+        <label for="members">[% c.loc('Users:') %]</label><br/>
         <input type="text" id="members" name="group.members" value="[% FOR member IN group.members %][% member %] [% END %]" />
+        <div id="members_list" class="facebook-auto">
+            <div class="default">[% c.loc('Enter the name of an existing user you would like to grant access to') %]</div>
+            <ul class="feed">
+            </ul>
+        </div>
     </div>
 [% IF message %]
     <div class="Message">[% message %]</div>
 [% END %]
-<pre>
-[% DUMP %]
-</pre>
-    <input type="submit" value="[% c.localize("Create Project") %]"/>
+    <div class="buttons right">
+        <button type="submit">
+            <img src="/static/images/icons/package_add.png"/>
+            [% c.localize("Create Project") %]
+        </button>
+    </div>
 </form>

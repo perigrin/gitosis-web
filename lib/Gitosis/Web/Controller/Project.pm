@@ -34,6 +34,15 @@ sub index : Private {
 sub create : Local {
     my ( $self, $c ) = @_;
     warn "project -> create";
+    $c->add_widget({
+        id    => 'wProjectCreate',
+        class => 'Page_Project_Create',
+        args  => {
+            ssh_keys => [
+                grep { /\.pub$/ } map { "$_" } $c->model('SSHKeys')->list
+            ],
+        },
+    });
     if ($c->request->method eq 'POST') {
         my $data = $c->request->params();
         use Data::Dumper;
@@ -70,7 +79,7 @@ sub project_home : PathPart('project') Chained('/') Args(1) {
     warn "project -> project_home ($name)";
     $c->stash->{project} = $c->find_group_by_name($name);
     $c->stash->{navbar}{classes}{project} = "selected";
-    warn "Project: " . $c->stash->{data};
+    warn "Project: " . $c->stash->{project};
 }
 
 =head2 project 
@@ -115,6 +124,9 @@ sub user_list : PathPart('users') Chained('project') Args(0) {
     my ( $self, $c, $name ) = @_;
     warn "project -> users";
     $c->stash->{navbar}{classes}{users} = "selected";
+    if ($c->req->method eq 'POST') {
+        $self->user_POST($c);
+    }
 }
 
 
@@ -126,22 +138,51 @@ Dispatches the specified user within the current project
 
 =cut
 
-sub user : PathPart('users') Chained('project') Args(1) {
+sub user : PathPart('users') Chained('project') Args(1) ActionClass('REST') {
     my ( $self, $c, $name ) = @_;
     $c->stash->{navbar}{classes}{users} = "selected";
     warn "project -> user ($name)";
 }
 
+sub user_GET {
+    my ( $self, $c, $name ) = @_;
+    warn "GET user ($name)";
+    my $key = $c->model('SSHKeys')->slurp("$name.pub");
+    warn $key;
+    $c->stash->{member} = {
+        name => defined $key ? $name : undef,
+        key => $key,
+    };
+}
 
-=head1 AUTHOR
+sub user_POST {
+    my ( $self, $c, $name ) = @_;
+    warn "POST user ($name)";
+    if (defined $name and grep { $_ eq $name } $c->model('SSHKeys')->list) {
+        $self->user_PUT($c, $name);
+    }
 
-Michael Nachbaur,,,
+    if (my $data = $c->request->params()) {
+        my $key = $data->{'member.key'} or die "Missing Key";
+        my $name = $name || $data->{'member.name'} or die "Missing Name";
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect($c->req->uri);
+    } else {
+        die 'Missing Request Data';    # Throw the correct error here
+    }
+}
 
-=head1 LICENSE
+sub user_PUT {
+    my ( $self, $c, $name ) = @_;
+    die 'PUT requires name' unless $name;
 
-This library is free software, you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=cut
+    if (my $data = $c->request->params()) {
+        my $key = $data->{'member.key'};
+        $c->model('SSHKeys')->splat( "$name.pub", $key );
+        $c->res->redirect($c->req->uri);
+    } else {
+        die 'Missing Request Data';    # Throw the correct error here
+    }
+}
 
 1;

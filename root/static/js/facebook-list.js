@@ -32,7 +32,7 @@ var FacebookList = new Class({
   },
   
   initialize: function(element, autoholder, options) {
-    arguments.callee.parent(element, options);
+    this.parent(element, options);
     this.data = [];
 		this.autoholder = $(autoholder).set('opacity', this.options.autocomplete.opacity);
 		this.autoresults = this.autoholder.getElement('ul');
@@ -108,7 +108,7 @@ var FacebookList = new Class({
   },
   
   createInput: function(options) {
-    var li = arguments.callee.parent(options);
+    var li = this.parent(options);
     var input = li.retrieve('input');
     input.addEvents({
       'keydown': function(e) {
@@ -142,7 +142,7 @@ var FacebookList = new Class({
   },
   
   createBox: function(text, options) {
-    var li = arguments.callee.parent(text, options);
+    var li = this.parent(text, options);
     return li.addEvents({
       'mouseenter': function() { this.addClass('bit-hover') },
       'mouseleave': function() { this.removeClass('bit-hover') }
@@ -159,14 +159,4 @@ var FacebookList = new Class({
     })).store('text', text);
   }
   
-});
-
-window.addEvent('domready', function() {
-  // init
-  var tlist2 = new FacebookList('facebook-demo', 'facebook-auto');
-  
-  // fetch and feed
-  new Request.JSON({'url': 'json.html', 'onComplete': function(j) {
-    j.each(tlist2.autoFeed, tlist2);
-  }}).send();
 });

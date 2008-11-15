@@ -1,11 +1,15 @@
 <!-- BEGIN lib/site/header -->
 <div id="PageHeader">
-    <ul class="LoginBar">
-        <li><a href="/">Home</a></li>
-        <li><a href="/project">Projects</a></li>
-        <li><a href="/search">Search</a></li>
-        <li class="account_left"><a href="/signup">Sign Up</a></li><li class="account_right"><a href="/login">Login</a></li>
-    </ul>
+    <div id="LoginBar">
+        [% IF browser.ie %]<div class="borderBL"></div>[% END %]
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/project">Projects</a></li>
+            <li><a href="/search">Search</a></li>
+            <li class="account_left"><a href="/signup">Sign Up</a></li><li class="account_right"><a href="/login">Login</a></li>
+        </ul>
+        [% IF browser.ie %]<div class="borderBR"></div>[% END %]
+    </div>
     <h1><a href="/">Gitosis Web</a></h1>
 [% IF project %]
     <h2><a href="[% c.uri_for('/project', project.name) %]">[% project.name %]</a></h2>

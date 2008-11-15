@@ -46,17 +46,44 @@ body {
     list-style: none;
 }
 
-#PageHeader .LoginBar {
+#LoginBar {
     float: right;
     background-color: #527dff;
-    padding: 3px 6px 6px 6px;
     -moz-border-radius-bottomleft: 8px;
     -moz-border-radius-bottomright: 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;
+    border-radius-bottomleft: 8px;
+    border-radius-bottomright: 8px;
 }
-#PageHeader .LoginBar li {
+.borderBL {
+    float: left;
+    display: relative;
+    background-image: url(/static/images/corners.gif);
+    background-repeat: no-repeat;
+    height: 10px;
+    width: 8px;
+}
+.borderBR {
+    float: right;
+    display: relative;
+    background-image: url(/static/images/corners.gif);
+    background-repeat: no-repeat;
+    height: 10px;
+    width: 8px;
+}
+#LoginBar .borderBL {
+    background-position: 0px 0px;
+    margin-top: 11px;
+}
+#LoginBar .borderBR {
+    background-position: -10px 0px;
+    margin-top: -5px;
+}
+#LoginBar li {
     margin-left: 8px;
 }
-#PageHeader .LoginBar .account_left {
+#LoginBar .account_left {
     margin-left: 16px;
     margin-right: 0px;
     padding-left: 6px;
@@ -67,8 +94,12 @@ body {
     border-left: 2px outset #ffc414;
     -moz-border-radius-topleft: 8px;
     -moz-border-radius-bottomleft: 8px;
+    -webkit-border-top-left-radius: 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    border-radius-topleft: 8px;
+    border-radius-bottomleft: 8px;
 }
-#PageHeader .LoginBar .account_right {
+#LoginBar .account_right {
     margin-left: 0px;
     margin-right: 6px;
     padding-right: 6px;
@@ -80,6 +111,10 @@ body {
     border-left: 1px solid #c79500;
     -moz-border-radius-topright: 8px;
     -moz-border-radius-bottomright: 8px;
+    -webkit-border-top-right-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;
+    border-radius-topright: 8px;
+    border-radius-bottomright: 8px;
 }
 
 #PageHeader h1,
@@ -101,6 +136,10 @@ body {
     padding: 8px 6px 0px 6px;
     -moz-border-radius-bottomright: 8px;
     -moz-border-radius-bottomleft: 8px;
+    -webkit-border-bottom-right-radius: 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    border-radius-bottomright: 8px;
+    border-radius-bottomleft: 8px;
 }
 #PageFooter .LeftColumn,
 #PageFooter .MiddleColumn,
@@ -117,6 +156,14 @@ body {
 #PageFooter .MiddleColumn {
     margin: 0px 33%;
     text-align: center;
+}
+#PageFooter .borderBL {
+    background-position: 0px -10px;
+    margin: 48px 0px 0px -6px;
+}
+#PageFooter .borderBR {
+    background-position: -10px -10px;
+    margin: -10px -6px 0px 0px;
 }
 
 #PageFooter a,
@@ -160,7 +207,7 @@ body {
 #PageBody .NavigationBar {
     margin: 0px 16px;
     padding: 0px;
-    height: 26px;
+    height: 29px;
     color: #333333;
 }
 #PageBody ul.NavigationBar li {
@@ -171,13 +218,20 @@ body {
     float: left;
     font-size: 18px;
     font-weight: bold;
+    background-color: #c0c0c0;
     height: 26px;
-    background-color: #dadada;
     -moz-border-radius-topleft: 8px;
     -moz-border-radius-topright: 8px;
+    -webkit-border-top-left-radius: 8px;
+    -webkit-border-top-right-radius: 8px;
+    border-radius-topleft: 8px;
+    border-radius-topright: 8px;
+    border-top: 2px solid #c0c0c0;
+    border-left: 2px solid #c0c0c0;
+    border-right: 2px solid #c0c0c0;
 }
 #PageBody ul.NavigationBar li.selected {
-    background-color: #c0c0c0;
+    background-color: #dadada;
 }
 
 #PageBody .NavigationBar a,
@@ -189,6 +243,27 @@ body {
     text-decoration: none;
 }
 
+a.breadcrumb,
+a.breadcrumb:link,
+a.breadcrumb:active,
+a.breadcrumb:visited,
+a.breadcrumb:hover {
+    color: #000000;
+    text-decoration: none;
+    font-size: 11px;
+    height: 16px;
+    line-height: 16px;
+}
+
+.icon {
+    width: 18px;
+    height: 16px;
+    text-indent: -2000px;
+    float: left;
+}
+.arrow_left {
+    background: transparent url(/static/images/icons/arrow_left.png) no-repeat top left;
+}
 /****************************
  ** Root Index Body styles **
  ****************************/
@@ -200,7 +275,6 @@ body {
     height: 115px;
     width: 45%;
     margin: auto;
-    border: 1px solid black;
     text-align: center;
 }
 #RootWelcomeContainer .LeftBox {
@@ -208,6 +282,12 @@ body {
 }
 #RootWelcomeContainer .RightBox {
     float: right;
+}
+
+input {
+    border: 1px solid #999999;
+    padding: 3px 3px 4px;
+    font: 11px "Lucida Grande", "Verdana"; 
 }
 
 a.BigButton,
@@ -224,4 +304,97 @@ a.BigButton:hover {
     border: 3px outset #144fff;
     text-decoration: none;
     -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.buttons {
+    height: 30px;
+    padding: 4px;
+    clear: both;
+}
+a.button, button {
+    display: block;
+    float: left;
+    margin: 0 7px 0 0;
+    background-color: #f5f5f5;
+    border: 1px solid #dedede;
+    border-top: 1px solid #999999;
+    border-left: 1px solid #999999;
+
+    font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    font-size: 100%;
+    line-height: 130%;
+    text-decoration: none;
+    font-weight: bold;
+    color: #565656;
+    cursor: pointer;
+    padding: 5px 10px 6px 7px; /* Links */
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+a.button:hover, button:hover {
+    background-color: #ffffff;
+}
+.right a.button, .right button {
+    float: right;
+}
+button {
+    width: auto;
+    overflow: visible;
+    padding: 4px 10px 3px 7px; /* IE6 */
+}
+button[type] {
+    padding: 5px 10px 5px 7px; /* Firefox */
+    line-height: 17px; /* Safari */
+}
+body.Browser_IE7 button[type] {
+    padding: 4px 10px 3px 7px; /* IE7 */
+}
+button img, a img {
+    margin: 0 3px -3px 0 !important;
+    padding: 0;
+    border: none;
+    width: 16px;
+    height: 16px;
+}
+
+/*******************************
+ ** Project Index Body styles **
+ *******************************/
+#ProjectList li,
+#UserList li {
+    list-style: none;
+    width: 230px;
+    float: left;
+}
+#ProjectList li .ProjectName,
+#UserList li {
+    font-size: 14px;
+}
+#ProjectList .ProjectRepos,
+#ProjectList .ProjectUsers {
+    display: inline;
+}
+.ListBottom {
+    clear: both;
+}
+#UserList li {
+    padding-left: 50px;
+    background: transparent url(/static/images/account.png) no-repeat top left;
+    height: 50px;
+}
+
+/********************************
+ ** Project Create Body styles **
+ ********************************/
+#NewProject #name {
+    width: 200px;
+}
+#NewProject #members {
+    width: 400px;
+}
+#NewProject #writable {
+    width: 400px;
 }

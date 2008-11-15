@@ -1,1 +1,30 @@
-bar
+<a href="[% c.uri_for('/project', project.name, 'users') %]" class="breadcrumb">
+    <div class="icon arrow_left">&laquo;</div>[% c.loc('Back to Users') %]</a>
+<div id="UserDetails">
+    <h3>[% member.name %]</h3>
+    <form method="POST">
+        <table>
+            <tbody>
+                <tr>
+                    <th>[% c.loc('Name') %]</th>
+                    <td><input type="text" name="member.name" value="[% member.name %]"/></td>
+                </tr>
+                <tr>
+                    <th>[% c.loc('SSH Key') %]</th>
+                    <td><textarea type="text" name="member.key" rows="10" cols="80">[% member.key %]</textarea></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <div class="buttons left">
+                            <button type="submit">
+                                <img src="/static/images/icons/user_edit.png"/>
+                                [% c.localize("Update") %]
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
