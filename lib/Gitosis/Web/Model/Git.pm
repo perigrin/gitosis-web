@@ -1,7 +1,7 @@
 package Gitosis::Web::Model::Git;
 use base 'Catalyst::Model::Factory';
 __PACKAGE__->config(
-    class       => 'Git',
+    class       => 'Git::Wrapper',
     constructor => 'repository',
 );
 
