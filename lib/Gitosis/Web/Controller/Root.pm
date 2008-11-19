@@ -38,12 +38,18 @@ sub repo : Path('/repo') {
 
 sub login : Path('/login') {
     my ( $self, $c ) = @_;
-    $c->stash->{template} = 'about.html';
+    $c->stash->{template} = 'help/about.html';
 }
+
+sub signup : Path('/signup') {
+    my ( $self, $c ) = @_;
+    $c->stash->{template} = 'help/about.html';
+}
+
 
 sub search : Path('/search') {
     my ( $self, $c ) = @_;
-    $c->stash->{template} = 'about.html';
+    $c->stash->{template} = 'help/about.html';
 }
 
 sub end : ActionClass('Serialize') {
