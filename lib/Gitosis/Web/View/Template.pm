@@ -12,7 +12,7 @@ __PACKAGE__->config(
         ],
         PRE_PROCESS  => 'lib/config/main',
         WRAPPER      => 'lib/site/wrapper',        
-        ERROR => 'error.tmpl',
+        ERROR => 'error.tt2',
         TIMER => 0,
         TEMPLATE_EXTENSION => '.html',
     }
