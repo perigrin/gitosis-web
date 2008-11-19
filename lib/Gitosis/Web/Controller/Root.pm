@@ -36,9 +36,9 @@ sub repo : Path('/repo') {
     $c->stash->{name}      = $name;
 }
 
-# sub login : Path('/login') {
-#     $c->stash->{template} = 'about.html';
-# }
+sub login : Path('/login') {
+    $c->stash->{template} = 'about.html';
+}
 # 
 # sub search : Path('/search') {
 #     $c->stash->{template} = 'about.html';
