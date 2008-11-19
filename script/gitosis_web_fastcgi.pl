@@ -1,4 +1,5 @@
 #!/usr/bin/env perl -w
+use lib qw(/usr/share/perl5);
 
 BEGIN { $ENV{CATALYST_ENGINE} ||= 'FastCGI' }
 
