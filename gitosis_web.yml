@@ -2,10 +2,10 @@
 name: Gitosis::Web
 Model::GitosisConfig:
      args:
-       file: projects/gitosis-admin/gitosis.conf
+       file: /var/gitosis-admin/gitosis.conf
 Model::GitosisRepo:
       args:
-        Directory: projects/gitosis-admin/
+        Directory: /var/gitosis-admin/
 Model::SSHKeys:
-      root_dir: projects/gitosis-admin/keydir
+      root_dir: /var/gitosis-admin/keydir
     
