@@ -37,12 +37,14 @@ sub repo : Path('/repo') {
 }
 
 sub login : Path('/login') {
+    my ( $self, $c ) = @_;
     $c->stash->{template} = 'about.html';
 }
-# 
-# sub search : Path('/search') {
-#     $c->stash->{template} = 'about.html';
-# }
+
+sub search : Path('/search') {
+    my ( $self, $c ) = @_;
+    $c->stash->{template} = 'about.html';
+}
 
 sub end : ActionClass('Serialize') {
 }
