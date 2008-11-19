@@ -10,7 +10,7 @@ __PACKAGE__->config(
     'default'   => 'text/x-json',
     'stash_key' => 'rest',
     'map'       => {
-        'text/html'          => [ 'View', 'Template', ],
+        'text/html'          => [ 'View',             'Template', ],
         'text/x-yaml'        => 'YAML',
         'text/x-json'        => 'JSON',
         'text/x-data-dumper' => [ 'Data::Serializer', 'Data::Dumper' ],
@@ -19,7 +19,7 @@ __PACKAGE__->config(
 
 sub auto : Private {
     my ( $self, $c ) = @_;
-    $c->stash->{gitosis}  = $c->model('GitosisConfig');
+    $c->stash->{gitosis} = $c->model('GitosisConfig');
     $c->stash->{browser} = $c->request->browser;
 }
 
@@ -36,14 +36,15 @@ sub repo : Path('/repo') {
     $c->stash->{name}      = $name;
 }
 
-sub login : Global {
-    my ( $self, $c ) = @_;
-    if ( $c->authenticate() ) {
-        $c->flash( message => "You signed in with OpenID!" );
-        $c->res->redirect( $c->uri_for('/') );
-    }
+sub login : Path('/search') {
+    $c->stash->{template} = 'about.html';
 }
 
-sub end : ActionClass('Serialize') {}
+sub search : Path('/search') {
+    $c->stash->{template} = 'about.html';
+}
+
+sub end : ActionClass('Serialize') {
+}
 
 1;
