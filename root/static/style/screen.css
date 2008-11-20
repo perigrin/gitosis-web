@@ -15,6 +15,7 @@ body {
 #PageWrapper {
     margin: 0px auto;
     width: 90%;
+    background: transparent url(/static/images/header_scale.gif) repeat-x top left;
 }
 
 /*******************
