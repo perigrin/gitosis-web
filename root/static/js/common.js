@@ -18,8 +18,17 @@ var Page_Project_Create = new Class({
     Extends: PageWidget,
 	Implements: [Options, Events],
     postInitialize: function() {
+        this.formValidator = new FormValidator($('NewProject'));
+
         // init
-        var tlist2 = new FacebookList('members', 'members_list');
+        var memberlist = new FacebookList('members', 'members_list', {separator: ' '});
+        if ($type(this.options['ssh_keys']) == 'array') {
+            var keys = this.options.ssh_keys;
+            for (var i = 0; i < keys.length; i++) {
+                console.log(keys[i]);
+                memberlist.autoFeed(keys[i]);
+            }
+        }
 
         // fetch and feed
         /*
@@ -28,5 +37,40 @@ var Page_Project_Create = new Class({
         }}).send();
         */
         return;
+    }
+});
+
+var Page_Project_UserList = new Class({
+    Extends: PageWidget,
+	Implements: [Options, Events],
+    fx: {
+        newUser: $empty(),
+        addUser: $empty()
+    },
+    postInitialize: function() {
+        console.log("Initializing");
+        this.formValidator = new FormValidator($('AddNewUser'));
+        var newUser = $('btnNewUser');
+        var newUserForm = $('AddNewUser');
+        var addUser = $('btnAddUser');
+        var addUserForm = $('AddExistingUser');
+        newUser.addEvent('click', this.openForm.bindWithEvent(this, newUserForm));
+        addUser.addEvent('click', this.openForm.bindWithEvent(this, addUserForm));
+        newUserForm.getElement('button[name="cancel"]').addEvent('click', this.closeForm.bindWithEvent(this, newUserForm));
+        addUserForm.getElement('button[name="cancel"]').addEvent('click', this.closeForm.bindWithEvent(this, addUserForm));
+        var addUserComplete = new Autocompleter.Local($('existingName'), this.options.ssh_keys);
+
+        return;
+    },
+    openForm: function(e, element) {
+        new Event(e).stop();
+        $(element).setStyles({
+            visibility: 'visible',
+            opacity:    '0'
+        }).fade('in');
+    },
+    closeForm: function(e, element) {
+        new Event(e).stop();
+        $(element).fade('out').chain(function(form) { form.reset(); form.setStyle('visibility', 'hidden') });
     }
 });

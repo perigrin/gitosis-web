@@ -4,28 +4,34 @@
 <form id="NewProject" method="POST">
     <div class="form_line">
         <label for="name">[% c.loc("Project Name:") %]</label><br/>
-        <input type="text" id="name" name="group.name" value="[% group.name %]"/>
+        <input type="text" id="name" name="name" value="[% group.name %]" minLength="3" length="42"
+            class="required minLength maxLength validate-alphanum"/>
     </div>
+    <!--
     <div class="form_line">
         <label for="writable">[% c.loc('Writable:') %]</label><br/>
-        <input type="text" id="writable" name="group.writable" value="[% FOR repo IN group.writable %][% repo %] [% END %]"/>
+        <input type="text" id="writable" name="writable" value="[% FOR repo IN group.writable %][% repo %] [% END %]"/>
     </div>
     <div class="form_line">
         <label for="members">[% c.loc('Users:') %]</label><br/>
-        <input type="text" id="members" name="group.members" value="[% FOR member IN group.members %][% member %] [% END %]" />
+        <input type="text" id="members" name="members" value="[% FOR member IN group.members %][% member %] [% END %]" />
         <div id="members_list" class="facebook-auto">
             <div class="default">[% c.loc('Enter the name of an existing user you would like to grant access to') %]</div>
             <ul class="feed">
             </ul>
         </div>
     </div>
+    -->
 [% IF message %]
     <div class="Message">[% message %]</div>
 [% END %]
-    <div class="buttons right">
+    <div class="buttons left">
         <button type="submit">
             <img src="/static/images/icons/package_add.png"/>
             [% c.localize("Create Project") %]
         </button>
     </div>
 </form>
+<pre>
+[% DUMP %]
+</pre>
