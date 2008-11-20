@@ -1,11 +1,9 @@
-<!--
-<div style="margin-bottom: 1em">
-    <h2 style="display:inline">G<span style="font-size: 10pt">ROUPS</span></h2> 
-    [<a href="[% c.uri_for('/group/add')%]">add group</a>]
-    [<a href="[% c.uri_for('/member/add')%]">add member</a>]
+<div class="buttons right">
+    <a class="button" href="/project/create">
+        <img src="/static/images/icons/package_add.png"/>
+        [% c.localize("Create Project") %]
+    </a>
 </div>
--->
-
 <ul id="ProjectList">
 [% FOR group IN gitosis.groups %]
 <li>
@@ -16,4 +14,5 @@
     </div>
 </li>
 [% END %]
+</ul>
 <div class="ListBottom"></div>

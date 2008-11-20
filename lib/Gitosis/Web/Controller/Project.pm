@@ -17,6 +17,20 @@ Catalyst Controller.
 =cut
 
 
+=head2 auto 
+
+=cut
+
+sub auto : Private {
+    my ( $self, $c ) = @_;
+    $self->{widget_args} = {
+        ssh_keys => [
+            grep { /\.pub$/ } map { "$_" } $c->model('SSHKeys')->list
+        ],
+    };
+}
+
+
 =head2 index 
 
 =cut
@@ -38,17 +52,13 @@ sub create : Local {
         id    => 'wProjectCreate',
         class => 'Page_Project_Create',
         args  => {
-            ssh_keys => [
-                grep { /\.pub$/ } map { "$_" } $c->model('SSHKeys')->list
-            ],
+            %{ $self->{widget_args} },
         },
     });
     if ($c->request->method eq 'POST') {
         my $data = $c->request->params();
-        use Data::Dumper;
-        warn Dumper($data);
-        $c->stash->{data} = $data;
-        my $name = $data->{'group.name'};
+        $c->stash->{group} = $data;
+        my $name = $data->{'name'};
         if (!$name) {
             $c->stash->{message} = $c->localize('You need to supply a project name');
             return;
@@ -58,7 +68,7 @@ sub create : Local {
         }
         my $group = $c->add_group($data);
         if ($group) {
-            $c->response->redirect($c->uri_for("/project/name", $group->name));
+            $c->response->redirect($c->uri_for("/project", $group->name));
             return;
         }
     }
@@ -123,6 +133,13 @@ Dispatches the specified project's list of users
 sub user_list : PathPart('users') Chained('project') Args(0) {
     my ( $self, $c, $name ) = @_;
     warn "project -> users";
+    $c->add_widget({
+        id    => 'UserList',
+        class => 'Page_Project_UserList',
+        args  => {
+            %{ $self->{widget_args} },
+        },
+    });
     $c->stash->{navbar}{classes}{users} = "selected";
     if ($c->req->method eq 'POST') {
         $self->user_POST($c);
@@ -149,7 +166,7 @@ sub user_GET {
     warn "GET user ($name)";
     my $key = $c->model('SSHKeys')->slurp("$name.pub");
     warn $key;
-    $c->stash->{member} = {
+    $c->stash->{user} = {
         name => defined $key ? $name : undef,
         key => $key,
     };
@@ -158,15 +175,41 @@ sub user_GET {
 sub user_POST {
     my ( $self, $c, $name ) = @_;
     warn "POST user ($name)";
-    if (defined $name and grep { $_ eq $name } $c->model('SSHKeys')->list) {
-        $self->user_PUT($c, $name);
+    use Data::Dumper;
+    my $data = $c->request->params();
+    warn Dumper($data);
+    if (defined $name and grep { $_ =~ /$name\.pub$/ } $c->model('SSHKeys')->list) {
+        warn "Foo $$data{action}\n";
+        if ($data->{action} eq 'delete') {
+            warn "Doing dat delete thang";
+            return $self->user_DELETE($c, $name);
+        } else {
+            warn "Doing dat put thang";
+            return $self->user_PUT($c, $name);
+        }
     }
 
-    if (my $data = $c->request->params()) {
-        my $key = $data->{'member.key'} or die "Missing Key";
-        my $name = $name || $data->{'member.name'} or die "Missing Name";
-        $c->model('SSHKeys')->splat( "$name.pub", $key );
-        $c->res->redirect($c->req->uri);
+    if ($data) {
+        warn "POST data: " . Dumper($data);
+        if ($data->{existingname}) {
+            push @{ $c->stash->{project}->members }, $data->{existingname} . ".pub";
+        } else {
+            my $key = $data->{'key'};
+            unless ($key) {
+                $c->stash->{message} = $c->localize('You need to supply an SSH key');
+                return;
+            }
+            my $name = $name || $data->{'name'};
+            unless ($name =~ /^[\w\-_\.]+$/) {
+                $c->stash->{message} = $c->localize('Key name is required, and cannot contain whitespaces');
+                return;
+            }
+
+            $c->model('SSHKeys')->splat( "$name.pub", $key );
+            push @{ $c->stash->{project}->members }, "$name.pub";
+        }
+        $c->stash->{gitosis}->save;
+        $c->res->redirect("/" . $c->req->path);
     } else {
         die 'Missing Request Data';    # Throw the correct error here
     }
@@ -174,15 +217,32 @@ sub user_POST {
 
 sub user_PUT {
     my ( $self, $c, $name ) = @_;
+    warn "PUT";
     die 'PUT requires name' unless $name;
 
     if (my $data = $c->request->params()) {
-        my $key = $data->{'member.key'};
+        my $key = $data->{'key'};
         $c->model('SSHKeys')->splat( "$name.pub", $key );
         $c->res->redirect($c->req->uri);
     } else {
         die 'Missing Request Data';    # Throw the correct error here
     }
+}
+
+sub user_DELETE {
+    my ( $self, $c, $name ) = @_;
+    warn "DELETE";
+    die 'DELETE requires name' unless $name;
+    my $group = $c->stash->{project};
+
+    my $filename = "$name.pub";
+    $c->model('SSHKeys')->file($filename)->remove();
+
+    foreach my $project (@{ $c->stash->{gitosis} }) {
+        $project->members->
+    }
+
+    $c->response->redirect($c->uri_for("/project", $group->name));
 }
 
 1;

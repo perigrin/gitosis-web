@@ -7,19 +7,23 @@
             <tbody>
                 <tr>
                     <th>[% c.loc('Name') %]</th>
-                    <td><input type="text" name="member.name" value="[% member.name %]"/></td>
+                    <td><input type="text" name="name" value="[% user.name %]"/></td>
                 </tr>
                 <tr>
                     <th>[% c.loc('SSH Key') %]</th>
-                    <td><textarea type="text" name="member.key" rows="10" cols="80">[% member.key %]</textarea></td>
+                    <td><textarea type="text" name="key" rows="10" cols="80">[% user.key %]</textarea></td>
                 </tr>
                 <tr>
                     <th></th>
                     <td>
                         <div class="buttons left">
-                            <button type="submit">
+                            <button type="submit" name="action" value="update">
                                 <img src="/static/images/icons/user_edit.png"/>
-                                [% c.localize("Update") %]
+                                [% c.localize("Update User") %]
+                            </button>
+                            <button type="submit" name="action" value="delete">
+                                <img src="/static/images/icons/user_delete.png"/>
+                                [% c.localize("Delete User") %]
                             </button>
                         </div>
                     </td>

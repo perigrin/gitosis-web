@@ -32,16 +32,15 @@ sub add_group {
         return $group;
     }
 
-    $cfg->add_group(
-        {
-            name     => $data->{'group.name'},
-            writable => $data->{'group.writable'},
-            members  => $data->{'group.members'},
-        }
-    );
+    my $group = {
+        name => $data->{'name'},
+    };
+    $group->{writable} = $data->{'writable'} if $data->{'writable'};
+    $group->{members}  = $data->{'members'} if $data->{'members'};
+    $cfg->add_group($group);
 
     $cfg->save;
-    return $cfg->find_group_by_name( $data->{'group.name'} );
+    return $cfg->find_group_by_name( $data->{'name'} );
 }
 
 sub update_group {
