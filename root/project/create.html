@@ -4,8 +4,7 @@
 <form id="NewProject" method="POST">
     <div class="form_line">
         <label for="name">[% c.loc("Project Name:") %]</label><br/>
-        <input type="text" id="name" name="name" value="[% group.name %]"
-            minLength="3" length="42"
+        <input type="text" id="name" name="name" value="[% group.name %]" minLength="3" length="42"
             class="required minLength maxLength validate-alphanum"/>
     </div>
     <!--

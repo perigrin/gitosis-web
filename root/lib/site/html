@@ -9,12 +9,21 @@
     </head>
     <body class="Browser_[% browser.browser_string %] Browser_[% browser.browser_string %][% browser.major %]">
         <div id="PageWrapper">[% content %]</div>
+        [% IF false %]
         <script language="JavaScript" src="/static/js/mootools-1.2.1-core-compressed.js"></script>
-        <script language="JavaScript" src="/static/js/mootools-1.2.1-core-compressed.js"></script>
+        <script language="JavaScript" src="/static/js/mootools-1.2-more-compressed_full.js"></script>
         <script language="JavaScript" src="/static/js/clientcide-trunk-596.compressed.js"></script>
         <script language="JavaScript" src="/static/js/textboxlist-compressed.js"></script>
         <script language="JavaScript" src="/static/js/facebook-list.js"></script>
         <script language="JavaScript" src="/static/js/common.js"></script>
+        [% ELSE %]
+        <script language="JavaScript" src="/static/js/mootools-1.2.1-core-uncompressed.js"></script>
+        <script language="JavaScript" src="/static/js/mootools-1.2-more-uncompressed.js"></script>
+        <script language="JavaScript" src="/static/js/clientcide-trunk-596.js"></script>
+        <script language="JavaScript" src="/static/js/textboxlist.js"></script>
+        <script language="JavaScript" src="/static/js/facebook-list.js"></script>
+        <script language="JavaScript" src="/static/js/common.js"></script>
+        [% END %]
         [% IF c.widgets.size > 0 %]
         <script language="JavaScript">[% c.widget_js %]</script>
         [% END %]

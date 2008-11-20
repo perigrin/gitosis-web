@@ -364,13 +364,13 @@ button img, a img {
  ** Project Index Body styles **
  *******************************/
 #ProjectList li,
-#UserList li {
+#CurrentUsers li {
     list-style: none;
     width: 230px;
     float: left;
 }
 #ProjectList li .ProjectName,
-#UserList li {
+#CurrentUsers li {
     font-size: 14px;
 }
 #ProjectList .ProjectRepos,
@@ -380,12 +380,13 @@ button img, a img {
 .ListBottom {
     clear: both;
 }
-#UserList li {
+#CurrentUsers li {
     padding-left: 50px;
     background: transparent url(/static/images/account.png) no-repeat top left;
     height: 50px;
 }
-#UserList #AddUser {
+#UserList #AddNewUser,
+#UserList #AddExistingUser {
     position: absolute;
     z-index: 10;
     right: 64px;
@@ -400,9 +401,15 @@ button img, a img {
     padding-top: 4px !important;
     visibility: hidden;
 }
+.visible {
+    visibility: visible !important;
+}
 .Float h3 {
     text-align: center;
     padding-bottom: 8px;
+}
+#AddExistingUser #existingName {
+    width: 220px;
 }
 
 /********************************
@@ -416,4 +423,33 @@ button img, a img {
 }
 #NewProject #writable {
     width: 400px;
+}
+
+/*************************
+ ** Autocomplete Styles **
+ *************************/
+ul.autocompleter-choices {
+    margin: 0;
+    border: 1px solid #999;
+    overflow: hidden;
+    height: auto !important;
+    height: 1%;
+    background-color: #DEE7F8;
+}
+*:first-child+html ul.autocompleter-choices { padding-bottom: 2px; }
+* html ul.autocompleter-choices { padding-bottom: 2px; } /* ie7 and below */
+
+ul.autocompleter-choices li {
+    list-style-type: none;
+    padding: 0 5px 4px 0;
+    font: 11px "Lucida Grande", "Verdana";
+}
+ul.autocompleter-choices li.autocompleter-selected {
+    border-color: #598BEC;
+    background: #598BEC;
+    color: #fff;
+}
+ul.autocompleter-choices .autocompleter-queried {
+    font-weight: bold;
+    text-decoration: underline;
 }

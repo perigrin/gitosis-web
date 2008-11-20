@@ -1,6 +1,6 @@
 <div id="UserList">
-    <form id="AddUser" method="POST" class="Float">
-        <h3>Add a New User</h3>
+    <form id="AddNewUser" method="POST" class="Float [% IF c.request.parameters.add_user == 'new' %]visible[% END %]">
+        <h3>Create a New User</h3>
         <table>
             <tbody>
                 <tr>
@@ -14,10 +14,53 @@
                 <tr>
                     <th></th>
                     <td>
+                        [% IF message %]
+                            <div class="validation-advice">Error: [% message %]</div>
+                        [% END %]
                         <div class="buttons left">
                             <button type="submit">
-                                <img src="/static/images/icons/user_edit.png"/>
+                                <img src="/static/images/icons/accept.png"/>
                                 [% c.localize("Create User") %]
+                            </button>
+                            <button name="cancel">
+                                <img src="/static/images/icons/cancel.png"/>
+                                [% c.localize("Cancel") %]
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <form id="AddExistingUser" method="POST" class="Float [% IF c.request.parameters.add_user == 'existing' %]visible[% END %]">
+        <h3>Add an Existing User</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <th>[% c.loc('Name') %]</th>
+                    <td>
+                        <input id="existingName" type="text" name="existingname" value="[% user.existingname %]"/>
+                        <div id="existingUserList" class="facebook-auto">
+                            <div class="default">[% c.loc('Enter SSH key names') %]</div>
+                            <ul class="feed">
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        [% IF message %]
+                            <div class="validation-advice">Error: [% message %]</div>
+                        [% END %]
+                        <div class="buttons left">
+                            <button type="submit">
+                                <img src="/static/images/icons/accept.png"/>
+                                [% c.localize("Add User") %]
+                            </button>
+                            <button name="cancel">
+                                <img src="/static/images/icons/cancel.png"/>
+                                [% c.localize("Cancel") %]
                             </button>
                         </div>
                     </td>
@@ -26,15 +69,23 @@
         </table>
     </form>
     <div class="buttons right">
-        <a class="button" href="add">
+        <a id="btnNewUser" class="button" href="/[% c.request.path %]?add_user=new">
             <img src="/static/images/icons/user_add.png"/>
-            [% c.localize("Add User") %]
+            [% c.localize("Create a New User") %]
+        </a>
+        <a id="btnAddUser" class="button" href="/[% c.request.path %]?add_user=existing">
+            <img src="/static/images/icons/user.png"/>
+            [% c.localize("Add an Existing User") %]
         </a>
     </div>
-    <ul>
+    <ul id="CurrentUsers">
         [% FOR member IN project.members %]
         <li>
-            <div class="UserName"><a href="[% c.uri_for('/project', project.name, 'users', member) %]">[% member %]</a></div>
+            <div class="UserName">
+                <a href="[% c.uri_for('/project', project.name, 'users', member.replace(/.pub$/, '')) %]">
+                    [% member.replace(/.pub$/, '') %]
+                </a>
+            </div>
         </li>
         [% END %]        
     </ul>
