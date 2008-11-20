@@ -238,9 +238,9 @@ sub user_DELETE {
     my $filename = "$name.pub";
     $c->model('SSHKeys')->file($filename)->remove();
 
-    foreach my $project (@{ $c->stash->{gitosis} }) {
-        $project->members->
-    }
+    #foreach my $project (@{ $c->stash->{gitosis} }) {
+    #    $project->members->
+    #}
 
     $c->response->redirect($c->uri_for("/project", $group->name));
 }
