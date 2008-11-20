@@ -1,0 +1,6 @@
+<h2>[% name %]</h2>
+<pre>
+[% FOR line IN repo.command('ls-tree', '-l', 'HEAD') -%]
+[% line %]
+[% END -%]
+</pre>
