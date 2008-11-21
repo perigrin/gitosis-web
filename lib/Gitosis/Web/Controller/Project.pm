@@ -25,7 +25,7 @@ sub auto : Private {
     my ( $self, $c ) = @_;
     $self->{widget_args} = {
         ssh_keys => [
-            grep { /\.pub$/ } map { "$_" } $c->model('SSHKeys')->list
+            map { $_ =~ /(.*)\.pub$/ } $c->model('SSHKeys')->list
         ],
     };
 }
@@ -37,7 +37,6 @@ sub auto : Private {
 
 sub index : Private {
     my ( $self, $c ) = @_;
-    warn "project -> index";
 }
 
 
@@ -47,7 +46,6 @@ sub index : Private {
 
 sub create : Local {
     my ( $self, $c ) = @_;
-    warn "project -> create";
     $c->add_widget({
         id    => 'wProjectCreate',
         class => 'Page_Project_Create',
@@ -85,11 +83,15 @@ Dispatches the specified project's home page.
 
 sub project_home : PathPart('project') Chained('/') Args(1) {
     my ( $self, $c, $name ) = @_;
-    #my $name = $c->req->captures->[0];
-    warn "project -> project_home ($name)";
     $c->stash->{project} = $c->find_group_by_name($name);
     $c->stash->{navbar}{classes}{project} = "selected";
-    warn "Project: " . $c->stash->{project};
+    $c->add_widget({
+        id    => 'RepoList',
+        class => 'Page_Project_Repo',
+        args  => {
+            %{ $self->{widget_args} },
+        },
+    });
 }
 
 =head2 project 
@@ -102,7 +104,6 @@ Dispatches the specified project's home page.
 
 sub project : PathPart('project') Chained('/') CaptureArgs(1) {
     my ( $self, $c, $name ) = @_;
-    warn "project -> ($name)";
     $c->stash->{project} = $c->find_group_by_name($name);
 }
 
@@ -116,7 +117,6 @@ Dispatches the specified project's history of changes
 
 sub history : PathPart('history') Chained('project') Args(0) {
     my ( $self, $c ) = @_;
-    warn "project -> history";
     $c->stash->{navbar}{classes}{history} = "selected";
 }
 
@@ -132,7 +132,6 @@ Dispatches the specified project's list of users
 
 sub user_list : PathPart('users') Chained('project') Args(0) {
     my ( $self, $c, $name ) = @_;
-    warn "project -> users";
     $c->add_widget({
         id    => 'UserList',
         class => 'Page_Project_UserList',
@@ -158,12 +157,10 @@ Dispatches the specified user within the current project
 sub user : PathPart('users') Chained('project') Args(1) ActionClass('REST') {
     my ( $self, $c, $name ) = @_;
     $c->stash->{navbar}{classes}{users} = "selected";
-    warn "project -> user ($name)";
 }
 
 sub user_GET {
     my ( $self, $c, $name ) = @_;
-    warn "GET user ($name)";
     my $key = $c->model('SSHKeys')->slurp("$name.pub");
     warn $key;
     $c->stash->{user} = {
@@ -174,25 +171,19 @@ sub user_GET {
 
 sub user_POST {
     my ( $self, $c, $name ) = @_;
-    warn "POST user ($name)";
-    use Data::Dumper;
+    my $group = $c->stash->{project};
     my $data = $c->request->params();
-    warn Dumper($data);
     if (defined $name and grep { $_ =~ /$name\.pub$/ } $c->model('SSHKeys')->list) {
-        warn "Foo $$data{action}\n";
-        if ($data->{action} eq 'delete') {
-            warn "Doing dat delete thang";
+        if ($data->{action} eq 'remove') {
             return $self->user_DELETE($c, $name);
         } else {
-            warn "Doing dat put thang";
             return $self->user_PUT($c, $name);
         }
     }
 
     if ($data) {
-        warn "POST data: " . Dumper($data);
         if ($data->{existingname}) {
-            push @{ $c->stash->{project}->members }, $data->{existingname} . ".pub";
+            push @{ $group->members }, $data->{existingname} . ".pub";
         } else {
             my $key = $data->{'key'};
             unless ($key) {
@@ -200,16 +191,16 @@ sub user_POST {
                 return;
             }
             my $name = $name || $data->{'name'};
-            unless ($name =~ /^[\w\-_\.]+$/) {
+            unless ($name =~ /^[\w\-_\.\@]+$/) {
                 $c->stash->{message} = $c->localize('Key name is required, and cannot contain whitespaces');
                 return;
             }
 
             $c->model('SSHKeys')->splat( "$name.pub", $key );
-            push @{ $c->stash->{project}->members }, "$name.pub";
+            push @{ $group->members }, "$name.pub";
         }
         $c->stash->{gitosis}->save;
-        $c->res->redirect("/" . $c->req->path);
+        $c->response->redirect($c->uri_for("/project", $group->name, "users"));
     } else {
         die 'Missing Request Data';    # Throw the correct error here
     }
@@ -217,7 +208,6 @@ sub user_POST {
 
 sub user_PUT {
     my ( $self, $c, $name ) = @_;
-    warn "PUT";
     die 'PUT requires name' unless $name;
 
     if (my $data = $c->request->params()) {
@@ -231,18 +221,36 @@ sub user_PUT {
 
 sub user_DELETE {
     my ( $self, $c, $name ) = @_;
-    warn "DELETE";
     die 'DELETE requires name' unless $name;
     my $group = $c->stash->{project};
 
     my $filename = "$name.pub";
-    $c->model('SSHKeys')->file($filename)->remove();
 
-    #foreach my $project (@{ $c->stash->{gitosis} }) {
-    #    $project->members->
-    #}
+    # Remove this ssh key from all projects' members lists
+    foreach my $project ($c->stash->{gitosis}->groups) {
+        my @members = grep { $_ ne $filename } @{ $project->members };
+        $project->members( \@members );
+    }
+    $c->stash->{gitosis}->save;
 
-    $c->response->redirect($c->uri_for("/project", $group->name));
+    $c->response->redirect($c->uri_for("/project", $group->name, "users"));
+}
+
+
+=head2 repos_list
+
+  /project/*/repos
+
+Dispatches the specified project's list of repos
+
+=cut
+
+sub repo_list : PathPart('repos') Chained('project') Args(0) {
+    my ( $self, $c, $name ) = @_;
+}
+
+sub repo_GET {
+    my ( $self, $c, $name ) = @_;
 }
 
 1;

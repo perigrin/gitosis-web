@@ -3,7 +3,7 @@
     <head>
         <title>[% template.title or site.title %]</title>
         <link rel="stylesheet" type="text/css" media="screen,projection" href="/static/style/screen.css"/>
-        <link rel="stylesheet" type="text/css" media="screen" href="/static/style/textboxlist.css"/>
+        <!--<link rel="stylesheet" type="text/css" media="screen" href="/static/style/textboxlist.css"/>-->
         <link rel="stylesheet" type="text/css" media="print" href="/static/style/print.css"/>
         <!--[if IE]><link rel="stylesheet" href="/static/style/ie.css" type="text/css" media="screen,projection"/><![endif]-->
     </head>
@@ -27,5 +27,6 @@
         [% IF c.widgets.size > 0 %]
         <script language="JavaScript">[% c.widget_js %]</script>
         [% END %]
+        <!-- Request took [% c.stats.elapsed %]s -->
     </body>
 </html>

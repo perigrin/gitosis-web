@@ -15,7 +15,7 @@ body {
 #PageWrapper {
     margin: 0px auto;
     width: 90%;
-    background: transparent url(/static/images/header_scale.gif) repeat-x top left;
+    background: #f0f0f0 url(/static/images/header_scale.gif) repeat-x top left;
 }
 
 /*******************
@@ -23,7 +23,6 @@ body {
  *******************/
 #PageHeader {
     height: 70px;
-    background-color: #f0f0f0;
     border-top: 3px solid #527dff;
     padding-left: 12px;
 }
@@ -186,19 +185,10 @@ body {
     list-style: none;
 }
 
-#PageFooterHidebar {
-    text-align: center;
-    height: 10px;
-    font-size: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
 /*************************
  ** Project Body styles **
  *************************/
 #PageBody {
-    background-color: #f0f0f0;
 }
 #PageBodyContent {
     border-top: 2px solid #c0c0c0;
@@ -382,12 +372,16 @@ button img, a img {
     clear: both;
 }
 #CurrentUsers li {
-    padding-left: 50px;
+    border: 2px outset #ffd452;
+    margin: 4px;
+    padding: 6px;
+}
+#CurrentUsers li .UserName {
     background: transparent url(/static/images/account.png) no-repeat top left;
     height: 50px;
+    padding-left: 54px;
 }
-#UserList #AddNewUser,
-#UserList #AddExistingUser {
+form.Float {
     position: absolute;
     z-index: 10;
     right: 64px;
@@ -397,6 +391,8 @@ button img, a img {
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
+    border: 1px solid #999999;
+    padding: 20px 30px 10px;
 }
 .Float {
     padding-top: 4px !important;
