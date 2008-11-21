@@ -13,7 +13,12 @@ var PageWidget = new Class({
         return;
     },
     openForm: function(e, element) {
-        new Event(e).stop();
+        if (arguments.length < 2) {
+            element = e;
+            e = null;
+        }
+        if ($defined(e))
+            new Event(e).stop();
         $(element).setStyles({
             visibility: 'visible',
             opacity:    '0'
@@ -79,11 +84,13 @@ var Page_Project_Repo = new Class({
     Extends: PageWidget,
 	Implements: [Options, Events],
     postInitialize: function() {
-        this.formValidator = new FormValidator($('AddNewRepo'));
         var newRepo = $('btnNewRepo');
         var newRepoForm = $('AddNewRepo');
-        addRepo.addEvent('click', this.openForm.bindWithEvent(this, addRepoForm));
-        addRepoForm.getElement('button[name="cancel"]').addEvent('click', this.closeForm.bindWithEvent(this, addRepoForm));
+        this.formValidator = new FormValidator(newRepoForm);
+        newRepo.addEvent('click', this.openForm.bindWithEvent(this, newRepoForm));
+        newRepoForm.getElement('button[name="cancel"]').addEvent('click', this.closeForm.bindWithEvent(this, newRepoForm));
+        if ($defined(this.options.message))
+            this.openForm(newRepoForm);
         return;
     }
 });

@@ -17,16 +17,15 @@ Catalyst Controller.
 =cut
 
 
-=head2 auto 
 
-=cut
-
-sub auto : Private {
-    my ( $self, $c ) = @_;
-    $self->{widget_args} = {
+sub widget_args {
+    my ($self, $c, %args) = @_;
+    return {
         ssh_keys => [
             map { $_ =~ /(.*)\.pub$/ } $c->model('SSHKeys')->list
         ],
+        message => $c->stash->{message},
+        %args,
     };
 }
 
@@ -46,30 +45,29 @@ sub index : Private {
 
 sub create : Local {
     my ( $self, $c ) = @_;
-    $c->add_widget({
-        id    => 'wProjectCreate',
-        class => 'Page_Project_Create',
-        args  => {
-            %{ $self->{widget_args} },
-        },
-    });
     if ($c->request->method eq 'POST') {
         my $data = $c->request->params();
         $c->stash->{group} = $data;
         my $name = $data->{'name'};
         if (!$name) {
             $c->stash->{message} = $c->localize('You need to supply a project name');
-            return;
         } elsif ($c->find_group_by_name($name)) {
             $c->stash->{message} = $c->localize('Project [_1] already exists', $name);
-            return;
+            $name = undef;
         }
-        my $group = $c->add_group($data);
-        if ($group) {
-            $c->response->redirect($c->uri_for("/project", $group->name));
-            return;
+
+        if ($name) {
+            my $group = $c->add_group($data);
+            if ($group) {
+                $c->response->redirect($c->uri_for("/project", $group->name));
+            }
         }
     }
+    $c->add_widget({
+        id    => 'wProjectCreate',
+        class => 'Page_Project_Create',
+        args  => $self->widget_args($c),
+    });
 }
 
 
@@ -85,13 +83,6 @@ sub project_home : PathPart('project') Chained('/') Args(1) {
     my ( $self, $c, $name ) = @_;
     $c->stash->{project} = $c->find_group_by_name($name);
     $c->stash->{navbar}{classes}{project} = "selected";
-    $c->add_widget({
-        id    => 'RepoList',
-        class => 'Page_Project_Repo',
-        args  => {
-            %{ $self->{widget_args} },
-        },
-    });
 }
 
 =head2 project 
@@ -132,17 +123,15 @@ Dispatches the specified project's list of users
 
 sub user_list : PathPart('users') Chained('project') Args(0) {
     my ( $self, $c, $name ) = @_;
-    $c->add_widget({
-        id    => 'UserList',
-        class => 'Page_Project_UserList',
-        args  => {
-            %{ $self->{widget_args} },
-        },
-    });
     $c->stash->{navbar}{classes}{users} = "selected";
     if ($c->req->method eq 'POST') {
         $self->user_POST($c);
     }
+    $c->add_widget({
+        id    => 'UserList',
+        class => 'Page_Project_UserList',
+        args  => $self->widget_args($c)
+    });
 }
 
 
@@ -246,11 +235,83 @@ Dispatches the specified project's list of repos
 =cut
 
 sub repo_list : PathPart('repos') Chained('project') Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{navbar}{classes}{repos} = "selected";
+    if ($c->req->method eq 'POST') {
+        $self->repo_POST($c);
+    }
+    $c->add_widget({
+        id    => 'RepoList',
+        class => 'Page_Project_Repo',
+        args  => $self->widget_args($c),
+    });
+}
+
+=head2 repo
+
+  /project/*/repos/*
+
+Dispatches the specified repo within the current project
+
+=cut
+
+sub repo : PathPart('repos') Chained('project') Args(1) ActionClass('REST') {
     my ( $self, $c, $name ) = @_;
+    $c->stash->{navbar}{classes}{repos} = "selected";
+    unless (grep { $_ eq $name } @{ $c->stash->{project}->writable }) {
+        die "No such repo defined";
+    }
 }
 
 sub repo_GET {
     my ( $self, $c, $name ) = @_;
+    $c->stash->{repo} = {
+        name => $name,
+    };
+}
+
+sub repo_POST {
+    my ( $self, $c, $name ) = @_;
+    warn "POST Repo ($name)\n";
+    my $group = $c->stash->{project};
+    my $data = $c->request->params();
+    use Data::Dumper;
+    warn Dumper($data);
+    if (defined $name) {
+        if ($data->{action} eq 'remove') {
+            return $self->repo_DELETE($c, $name);
+        #} else {
+        #    return $self->repo_PUT($c, $name);
+        }
+    }
+
+    if ($data) {
+        $name ||= $data->{name};
+        if (grep { $_ eq $name } @{ $group->writable }) {
+            $c->stash->{message} = $c->localize('A repository by that name already exists');
+            return;
+        }
+        unless ($name =~ /^[\w\-_\.]+$/) {
+            $c->stash->{message} = $c->localize('A repository name is required, and cannot contain whitespaces');
+            return;
+        }
+        push @{ $group->writable }, $name;
+        warn "Writable is: " . join(", ", @{ $group->writable }) . "\n";
+        $c->stash->{gitosis}->save;
+        $c->response->redirect($c->uri_for("/project", $group->name, "repos", $name));
+    }
+}
+
+sub repo_DELETE {
+    my ( $self, $c, $name ) = @_;
+    my $group = $c->stash->{project};
+    my $data = $c->request->params();
+
+    my @repos = grep { $_ ne $name } @{ $group->writable };
+    $group->writable(\@repos);
+    
+    $c->stash->{gitosis}->save;
+    $c->response->redirect($c->uri_for("/project", $group->name, "repos"));
 }
 
 1;
