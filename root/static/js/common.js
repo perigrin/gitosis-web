@@ -1,5 +1,5 @@
 var PageWidget = new Class({
-	Implements: [Options, Events, ToElement],
+	Implements: [Options, Events],
     options: {
         'id':      '',
         className: 'PageWidget',

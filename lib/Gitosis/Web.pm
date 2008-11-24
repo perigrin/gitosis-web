@@ -71,8 +71,11 @@ __PACKAGE__->config(
                     passwword_field => "password",
                     password_type   => "clear",
                 },
+                store => {
+                    class       => 'FromSub::Hash',
+                    model_class => 'UserAuth',
+                },
             },
-
         },
     },
 

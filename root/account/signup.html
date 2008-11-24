@@ -5,34 +5,34 @@
             <table>
                 <tbody>
                     <tr>
-                        <th width="120"><label for="email">[% c.loc('E-mail address') %]</label></th>
+                        <th width="120" nowrap="nowrap"><label for="email">[% c.loc('E-mail address') %]</label></th>
                         <td width="260"><input id="email" name="email" type="text" value="[% signup.email %]"
                             class="required validate-email"/></td>
                     </tr>
                     <tr>
-                        <th><label for="password">[% c.loc('Password') %]</label></th>
+                        <th nowrap="nowrap"><label for="password">[% c.loc('Password') %]</label></th>
                         <td><input id="password" name="password" type="password"
                             validatorProps="{minLength:5}"
                             class="required minLength"/></td>
                     </tr>
                     <tr>
-                        <th><label for="confirm_password">[% c.loc('Confirm Password') %]</label></th>
+                        <th nowrap="nowrap"><label for="confirm_password">[% c.loc('Confirm Password') %]</label></th>
                         <td><input id="confirm_password" name="confirm_password" type="password"
                             validatorProps="{minLength:5}"
                             class="required minLength"/></td>
                     </tr>
                     <tr>
-                        <th><label for="firstname">[% c.loc('First Name') %]</label></th>
+                        <th nowrap="nowrap"><label for="firstname">[% c.loc('First Name') %]</label></th>
                         <td><input id="firstname" name="firstname" type="text" value="[% signup.firstname %]"
                             class="required"/></td>
                     </tr>
                     <tr>
-                        <th><label for="lastname">[% c.loc('Last Name') %]</label></th>
+                        <th nowrap="nowrap"><label for="lastname">[% c.loc('Last Name') %]</label></th>
                         <td><input id="lastname" name="lastname" type="text" value="[% signup.lastname %]"
                             class="required"/></td>
                     </tr>
                     <tr>
-                        <th><label for="timezone">[% c.loc('Timezone') %]</label></th>
+                        <th nowrap="nowrap"><label for="timezone">[% c.loc('Timezone') %]</label></th>
                         <td>
                             <select id="timezone" name="timezone" class="required">
                                 <option></option>
