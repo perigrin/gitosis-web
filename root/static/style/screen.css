@@ -55,6 +55,7 @@ body {
     -webkit-border-bottom-right-radius: 8px;
     border-radius-bottomleft: 8px;
     border-radius-bottomright: 8px;
+    height: 20px;
 }
 .borderBL {
     float: left;
@@ -407,6 +408,72 @@ form.Float {
 }
 #AddExistingUser #existingName {
     width: 220px;
+}
+
+/*******************************
+ ** Account Login Body styles **
+ *******************************/
+#Login,
+#Signup {
+    width: 750px;
+    height: 275px;
+    margin: 0px auto;
+    padding: 30px;
+}
+#Login h3,
+#Signup h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+#Login th,
+#Signup th {
+    text-align: right;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+#Login .signin,
+#Login .signup,
+#Signup .signup,
+#Signup .signup_info {
+    width: 350px;
+    padding: 10px;
+    float: left;
+}
+#Login .signup {
+    border-left: 1px solid #000000;
+}
+#Signup .signup {
+    border-right: 1px solid #000000;
+}
+#LoginOpenID {
+    margin-top: 30px;
+}
+#LoginOpenID li {
+    list-style: none;
+    margin-left: 20px;
+}
+#LoginOpenID a,
+#LoginOpenID a:link,
+#LoginOpenID a:active,
+#LoginOpenID a:visited {
+    padding-left: 20px;
+    text-decoration: none;
+}
+#LoginOpenID a:hover {
+    text-decoration: underline;
+}
+#LoginOpenID li.openid a {
+    background: transparent url(/static/images/icons/openid.png) no-repeat left center;
+}
+#LoginOpenID li.yahoo a {
+    background: transparent url(/static/images/icons/yahoo.png) no-repeat left center;
+}
+#LoginOpenID li.google a {
+    background: transparent url(/static/images/icons/google.png) no-repeat left center;
+}
+#LoginOpenID li.facebook a {
+    background: transparent url(/static/images/icons/facebook.png) no-repeat left center;
 }
 
 /********************************

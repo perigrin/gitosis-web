@@ -22,18 +22,16 @@ has gitweb_engine => (
     isa        => 'Gitosis::Web::Engine',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [
-        qw(
-          add_group
-          update_group
-          find_group_by_name
-          save_repo
-          maketext
-          add_widget
-          widgets
-          widget_js
-          )
-    ],
+    handles    => [qw(
+        add_group
+        update_group
+        find_group_by_name
+        save_repo
+        maketext
+        add_widget
+        widgets
+        widget_js
+    )],
 );
 
 sub _build_gitweb_engine {
@@ -59,17 +57,19 @@ __PACKAGE__->config(
 
     authentication => {
         default_realm => 'openid',
-        realms        => {
+        realms => {
             openid => {
-                ua_args => { whitelisted_hosts => [qw( 127.0.0.1 localhost )] },
+                ua_args    => { whitelisted_hosts => [qw( 127.0.0.1 localhost )] },
                 credential => {
                     class => "OpenID",
                     store => { class => "OpenID" },
                 },
             },
-            password => {
+            account => {
                 credential => {
-                    class => "Password",
+                    class           => "Password",
+                    passwword_field => "password",
+                    password_type   => "clear",
                 },
             },
 

@@ -1,5 +1,5 @@
 var PageWidget = new Class({
-	Implements: [Options, Events],
+	Implements: [Options, Events, ToElement],
     options: {
         'id':      '',
         className: 'PageWidget',
@@ -32,7 +32,6 @@ var PageWidget = new Class({
 
 var Page_Project_Create = new Class({
     Extends: PageWidget,
-	Implements: [Options, Events],
     postInitialize: function() {
         this.formValidator = new FormValidator($('NewProject'));
 
@@ -58,7 +57,6 @@ var Page_Project_Create = new Class({
 
 var Page_Project_UserList = new Class({
     Extends: PageWidget,
-	Implements: [Options, Events],
     fx: {
         newUser: $empty(),
         addUser: $empty()
@@ -82,7 +80,6 @@ var Page_Project_UserList = new Class({
 
 var Page_Project_Repo = new Class({
     Extends: PageWidget,
-	Implements: [Options, Events],
     postInitialize: function() {
         var newRepo = $('btnNewRepo');
         var newRepoForm = $('AddNewRepo');
@@ -91,6 +88,16 @@ var Page_Project_Repo = new Class({
         newRepoForm.getElement('button[name="cancel"]').addEvent('click', this.closeForm.bindWithEvent(this, newRepoForm));
         if ($defined(this.options.message))
             this.openForm(newRepoForm);
+        return;
+    }
+});
+
+var Page_Account_Signup = new Class({
+    Extends: PageWidget,
+    postInitialize: function() {
+        var newRepo = $('btnSignup');
+        var form = $('SignupForm');
+        this.formValidator = new FormValidator(form);
         return;
     }
 });
