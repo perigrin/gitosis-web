@@ -7,12 +7,10 @@ use Gitosis::Web;
 __PACKAGE__->config(
     {
         CATALYST_VAR => 'c',
-        INCLUDE_PATH => [
-            Gitosis::Web->path_to( 'root' ),
-        ],
+        INCLUDE_PATH => [ Gitosis::Web->path_to( 'root' ) ],
         PRE_PROCESS  => 'lib/config/main',
         WRAPPER      => 'lib/site/wrapper',        
-        ERROR => 'error.tmpl',
+        ERROR => 'error.html',
         TIMER => 0,
         TEMPLATE_EXTENSION => '.html',
     }

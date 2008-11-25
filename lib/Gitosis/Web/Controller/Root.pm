@@ -36,6 +36,7 @@ sub repo : Path('/repo') {
     $c->stash->{name}      = $name;
 }
 
-sub end : ActionClass('Serialize') {}
+sub end : ActionClass('Serialize') {
+}
 
 1;
