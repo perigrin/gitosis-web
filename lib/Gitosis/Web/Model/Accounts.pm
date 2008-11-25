@@ -48,7 +48,7 @@
     );
 
     sub _build_users {
-        YAML::Load( $self->file->slurp ) or die "$!";
+        YAML::Load( $_[0]->file->slurp ) or die "$!";
     }
 
     sub to_string {
