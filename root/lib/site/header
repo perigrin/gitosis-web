@@ -6,7 +6,11 @@
             <li><a href="/">Home</a></li>
             <li><a href="/project">Projects</a></li>
             <li><a href="/search">Search</a></li>
+            [% IF c.user %]
+            <li class="account_left"><a href="/account">Account</a></li><li class="account_right"><a href="/logout">Logout</a></li>
+            [% ELSE %]
             <li class="account_left"><a href="/signup">Sign Up</a></li><li class="account_right"><a href="/login">Login</a></li>
+            [% END %]
         </ul>
         [% IF browser.ie %]<div class="borderBR"></div>[% END %]
     </div>
