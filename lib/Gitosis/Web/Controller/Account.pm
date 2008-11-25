@@ -33,7 +33,7 @@ sub signup : Path('/signup') {
     });
 }
 
-sub openid : Path('/login/openid') : Args(1) {
+sub openid : Path('/openid') : Args(1) {
     my ($self, $c, $type) = @_;
     $type ||= $c->req->param('type');
     warn "openid ($type)\n";
