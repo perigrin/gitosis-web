@@ -13,7 +13,7 @@ sub index : Private {
     $c->response->body('Matched Gitosis::Web::Controller::Account in Account.');
 }
 
-sub signup : Global {
+sub signup : Path('/signup') {
     my ($self, $c) = @_;
     $c->stash->{timezones} = [
         DateTime::TimeZone->all_names
@@ -33,7 +33,7 @@ sub signup : Global {
     });
 }
 
-sub openid : Global : Args(1) {
+sub openid : Path('/login/openid') : Args(1) {
     my ($self, $c, $type) = @_;
     $type ||= $c->req->param('type');
     warn "openid ($type)\n";
