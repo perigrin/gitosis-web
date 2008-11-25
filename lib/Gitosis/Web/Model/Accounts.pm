@@ -13,7 +13,7 @@
 
 {
 
-    package Gitosis::Web::Model::UserAuth;
+    package Gitosis::Web::Model::Accounts;
     use Moose;
     BEGIN { extends 'Catalyst::Model' }
 
