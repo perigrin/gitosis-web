@@ -74,7 +74,7 @@ sub widget_js {
             $widget->{id},
             $widget->{class},
             $widget->{id},
-            encode_json $widget->{args},
+            encode_json($widget->{args} || {}),
         );
     }
     $js = "var Widgets = {}; window.addEvent('domready', function() { $js });";

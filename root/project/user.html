@@ -1,5 +1,6 @@
 <a href="[% c.uri_for('/project', project.name, 'users') %]" class="breadcrumb">
-    <div class="icon arrow_left">&laquo;</div>[% c.loc('Back to Users') %]</a>
+    <div class="icon arrow_left">&laquo;</div>[% c.loc('Back to Users') %]
+</a>
 <div id="UserDetails">
     <h3>[% member.name %]</h3>
     <form method="POST">
@@ -21,9 +22,9 @@
                                 <img src="/static/images/icons/user_edit.png"/>
                                 [% c.localize("Update User") %]
                             </button>
-                            <button type="submit" name="action" value="delete">
+                            <button type="submit" name="action" value="remove">
                                 <img src="/static/images/icons/user_delete.png"/>
-                                [% c.localize("Delete User") %]
+                                [% c.localize("Remove User") %]
                             </button>
                         </div>
                     </td>

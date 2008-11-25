@@ -15,7 +15,7 @@ body {
 #PageWrapper {
     margin: 0px auto;
     width: 90%;
-    background: transparent url(/static/images/header_scale.gif) repeat-x top left;
+    background: #f0f0f0 url(/static/images/header_scale.gif) repeat-x top left;
 }
 
 /*******************
@@ -23,7 +23,6 @@ body {
  *******************/
 #PageHeader {
     height: 70px;
-    background-color: #f0f0f0;
     border-top: 3px solid #527dff;
     padding-left: 12px;
 }
@@ -56,6 +55,7 @@ body {
     -webkit-border-bottom-right-radius: 8px;
     border-radius-bottomleft: 8px;
     border-radius-bottomright: 8px;
+    height: 20px;
 }
 .borderBL {
     float: left;
@@ -186,19 +186,10 @@ body {
     list-style: none;
 }
 
-#PageFooterHidebar {
-    text-align: center;
-    height: 10px;
-    font-size: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
 /*************************
  ** Project Body styles **
  *************************/
 #PageBody {
-    background-color: #f0f0f0;
 }
 #PageBodyContent {
     border-top: 2px solid #c0c0c0;
@@ -382,12 +373,16 @@ button img, a img {
     clear: both;
 }
 #CurrentUsers li {
-    padding-left: 50px;
+    border: 1px solid #ffd452;
+    margin: 4px;
+    padding: 6px;
+}
+#CurrentUsers li .UserName {
     background: transparent url(/static/images/account.png) no-repeat top left;
     height: 50px;
+    padding-left: 54px;
 }
-#UserList #AddNewUser,
-#UserList #AddExistingUser {
+form.Float {
     position: absolute;
     z-index: 10;
     right: 64px;
@@ -397,6 +392,8 @@ button img, a img {
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
+    border: 1px solid #999999;
+    padding: 20px 30px 10px;
 }
 .Float {
     padding-top: 4px !important;
@@ -411,6 +408,72 @@ button img, a img {
 }
 #AddExistingUser #existingName {
     width: 220px;
+}
+
+/*******************************
+ ** Account Login Body styles **
+ *******************************/
+#Login,
+#Signup {
+    width: 750px;
+    height: 275px;
+    margin: 0px auto;
+    padding: 30px;
+}
+#Login h3,
+#Signup h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+#Login th,
+#Signup th {
+    text-align: right;
+    font-weight: normal;
+    vertical-align: top;
+}
+
+#Login .signin,
+#Login .signup,
+#Signup .signup,
+#Signup .signup_info {
+    width: 350px;
+    padding: 10px;
+    float: left;
+}
+#Login .signup {
+    border-left: 1px solid #000000;
+}
+#Signup .signup {
+    border-right: 1px solid #000000;
+}
+#LoginOpenID {
+    margin-top: 30px;
+}
+#LoginOpenID li {
+    list-style: none;
+    margin-left: 20px;
+}
+#LoginOpenID a,
+#LoginOpenID a:link,
+#LoginOpenID a:active,
+#LoginOpenID a:visited {
+    padding-left: 20px;
+    text-decoration: none;
+}
+#LoginOpenID a:hover {
+    text-decoration: underline;
+}
+#LoginOpenID li.openid a {
+    background: transparent url(/static/images/icons/openid.png) no-repeat left center;
+}
+#LoginOpenID li.yahoo a {
+    background: transparent url(/static/images/icons/yahoo.png) no-repeat left center;
+}
+#LoginOpenID li.google a {
+    background: transparent url(/static/images/icons/google.png) no-repeat left center;
+}
+#LoginOpenID li.facebook a {
+    background: transparent url(/static/images/icons/facebook.png) no-repeat left center;
 }
 
 /********************************
