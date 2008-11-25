@@ -28,7 +28,7 @@ sub BUILD {
     my ( $self, $args ) = @_;
 
     if ( exists $args->{config} ) {
-        $self->users(Load($self->{config}));
+        $self->users( Load( $self->{config} ) );
     }
 }
 
@@ -39,7 +39,7 @@ has [qw( file )] => (
 
 sub to_string {
     my ($self) = @_;
-    return Dump($self->users);
+    return Dump( $self->users );
 }
 
 sub save {
@@ -48,25 +48,23 @@ sub save {
     $self->file->openw->print( $self->to_string ) or die "$!";
 }
 
-
 sub auth {
-    my ($self, $c, $userinfo) = @_;
- 
-    my $where;
-    if (exists $userinfo->{user_id}) {
-        $where = { user_id => $userinfo->{user_id} };
-    } elsif (exists $userinfo->{username}) {
-        $where = { username => $userinfo->{username} };
-    } else { return; }
- 
-    if (my $val = $c->cache->get($key) {
+    my ( $self, $c, $userinfo ) = @_;
+
+    my $where =
+        exists $userinfo->{user_id}  ? { user_id  => $userinfo->{user_id} }
+      : exists $userinfo->{username} ? { username => $userinfo->{username} }
+      :                                return;
+
+    my $key = $userinfo->{user_id} || $userinfo->{username};
+
+    if ( my $val = $c->cache->get($key) ) {
         return $val;
-    } else {
-        my $user = $c->model(’TestApp’)->resultset(’User’)->search( $where )->first;
-        $user = $user->{_column_data};
-        $c->cache->set($key, $user);
     }
- 
+
+    my $user = $c->model('TestApp')->resultset('User')->search($where)->first;
+    $user = $user->{_column_data};
+    $c->cache->set( $key, $user );
     return $user;
 }
 
