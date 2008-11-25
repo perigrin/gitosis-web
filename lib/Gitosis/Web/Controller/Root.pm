@@ -10,10 +10,10 @@ __PACKAGE__->config(
     'default'   => 'text/x-json',
     'stash_key' => 'rest',
     'map'       => {
-        'text/html'          => [ 'View',             'Template', ],
+        'text/html'          => [qw( View Template )],
         'text/x-yaml'        => 'YAML',
         'text/x-json'        => 'JSON',
-        'text/x-data-dumper' => [ 'Data::Serializer', 'Data::Dumper' ],
+        'text/x-data-dumper' => [qw( Data::Serializer Data::Dumper )],
     },
 );
 

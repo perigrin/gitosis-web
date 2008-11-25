@@ -8,4 +8,6 @@ Model::GitosisRepo:
         Directory: /var/gitosis-admin/
 Model::SSHKeys:
       root_dir: /var/gitosis-admin/keydir
+Model::Accounts:
+      config: users.conf
     

@@ -1,0 +1,58 @@
+<div id="Login">
+    <div class="signin">
+        <h3>[% c.loc('Sign In') %]</h3>
+        <form id="LoginForm">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>[% c.loc('E-mail') %]</th>
+                        <td colspan="2"><input id="email" name="email" type="text" value="[% login.email %]"/></td>
+                    </tr>
+                    <tr>
+                        <th>[% c.loc('Password') %]</th>
+                        <td colspan="2"><input id="password" name="password" type="password"/></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"></td>
+                        <td colspan="2">
+                            <input id="remember" name="rememberme" type="checkbox"/>
+                            <label for="remember">[% c.loc('Remember me for 2 weeks') %]</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="buttons left">
+                                <button type="submit" id="signin">
+                                    <img src="/static/images/icons/key.png"/>
+                                    [% c.localize("Sign in") %]
+                                </button>
+                            </div>
+                        </td>
+                        <td align="right">
+                            <a href="/account/forgot_password">[% c.loc('Forgot your password?') %]</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <div id="LoginOpenID">
+            <b>Other options for signing in:</b>
+            <ul>
+                <li class="openid"><a href="/openid">Sign in with OpenID</a></li>
+                <li class="yahoo"><a href="/openid/yahoo">Sign in with Yahoo! ID</a></li>
+                <li class="google"><a href="/openid/google">Sign in with Google ID</a></li>
+                <li class="facebook"><a href="/openid/facebook">Sign in with Facebook ID</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="signup">
+        <h3>[% c.loc('Sign up now for an account') %]</h3>
+        <p>Creating an account is easy, and creating your own project is even easier.  Sign in, and get yours started today.</p>
+        <div class="buttons left">
+            <a class="button" id="login_create" href="/signup">
+                <img src="/static/images/icons/key_add.png"/>
+                [% c.localize("Sign up now") %]
+            </a>
+        </div>
+    </div>
+</div>
