@@ -162,7 +162,8 @@ sub user_POST {
     my ( $self, $c, $name ) = @_;
     my $group = $c->stash->{project};
     my $data = $c->request->params();
-    if (defined $name and grep { $_ =~ /$name\.pub$/ } $c->model('SSHKeys')->list) {
+    my @available_keys = $c->model('SSHKeys')->list;
+    if (defined $name and grep { $_ eq "$name.pub" } @available_keys) {
         if ($data->{action} eq 'remove') {
             return $self->user_DELETE($c, $name);
         } else {
@@ -171,15 +172,15 @@ sub user_POST {
     }
 
     if ($data) {
-        if ($data->{existingname}) {
-            push @{ $group->members }, $data->{existingname} . ".pub";
+        my $name = $name || $data->{'name'};
+        if (grep { $_ eq "$name.pub" } @available_keys) {
+            push @{ $group->members }, $name . ".pub";
         } else {
             my $key = $data->{'key'};
             unless ($key) {
                 $c->stash->{message} = $c->localize('You need to supply an SSH key');
                 return;
             }
-            my $name = $name || $data->{'name'};
             unless ($name =~ /^[\w\-_\.\@]+$/) {
                 $c->stash->{message} = $c->localize('Key name is required, and cannot contain whitespaces');
                 return;
@@ -188,39 +189,45 @@ sub user_POST {
             $c->model('SSHKeys')->splat( "$name.pub", $key );
             push @{ $group->members }, "$name.pub";
         }
-        $c->stash->{gitosis}->save_repo;
+        $c->save_repo(sprintf(q{Added SSH key "%s" to project "%s"}, $name, $group->name));
         $c->response->redirect($c->uri_for("/project", $group->name, "users"));
     } else {
-        die 'Missing Request Data';    # Throw the correct error here
+        $c->stash->{message} = 'Missing Request Data';    # Throw the correct error here
+        return;
     }
 }
 
 sub user_PUT {
     my ( $self, $c, $name ) = @_;
-    die 'PUT requires name' unless $name;
+    unless ($name) {
+        $c->stash->{message} = 'PUT requires name';
+        return;
+    }
 
     if (my $data = $c->request->params()) {
         my $key = $data->{'key'};
         $c->model('SSHKeys')->splat( "$name.pub", $key );
         $c->res->redirect($c->req->uri);
     } else {
-        die 'Missing Request Data';    # Throw the correct error here
+        $c->stash->{message} = 'Missing Request Data';    # Throw the correct error here
+        return;
     }
 }
 
 sub user_DELETE {
     my ( $self, $c, $name ) = @_;
-    die 'DELETE requires name' unless $name;
+    unless ($name) {
+        $c->stash->{message} = 'DELETE requires name';
+        return;
+    }
     my $group = $c->stash->{project};
 
     my $filename = "$name.pub";
 
     # Remove this ssh key from all projects' members lists
-    foreach my $project ($c->stash->{gitosis}->groups) {
-        my @members = grep { $_ ne $filename } @{ $project->members };
-        $project->members( \@members );
-    }
-    $c->stash->{gitosis}->save_repo;
+    my @members = grep { $_ ne $filename } @{ $group->members };
+    $group->members( \@members );
+    $c->save_repo(sprintf(q{Removed SSH key "%s" from project "%s"}, $name, $group->name));
 
     $c->response->redirect($c->uri_for("/project", $group->name, "users"));
 }
@@ -297,7 +304,7 @@ sub repo_POST {
         }
         push @{ $group->writable }, $name;
         warn "Writable is: " . join(", ", @{ $group->writable }) . "\n";
-        $c->stash->{gitosis}->save_repo;
+        $c->save_repo(sprintf(q{Added repository "%s" to project "%s"}, $name, $group->name));
         $c->response->redirect($c->uri_for("/project", $group->name, "repos", $name));
     }
 }
@@ -310,7 +317,7 @@ sub repo_DELETE {
     my @repos = grep { $_ ne $name } @{ $group->writable };
     $group->writable(\@repos);
     
-    $c->stash->{gitosis}->save_repo;
+    $c->save_repo(sprintf(q{Removed repository "%s" from group "%s"}, $name, $group->name));
     $c->response->redirect($c->uri_for("/project", $group->name, "repos"));
 }
 

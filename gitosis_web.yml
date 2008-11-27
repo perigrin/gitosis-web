@@ -5,7 +5,7 @@ Model::GitosisConfig:
        file: /var/gitosis-admin/gitosis.conf
 Model::GitosisRepo:
       args:
-        Directory: /var/gitosis-admin/
+        root_dir: /var/gitosis-admin/
 Model::SSHKeys:
       root_dir: /var/gitosis-admin/keydir
 Model::Accounts:

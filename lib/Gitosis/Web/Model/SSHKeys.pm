@@ -4,9 +4,7 @@ use strict;
 use base 'Catalyst::Model::File';
 use Cwd;
 
-__PACKAGE__->config(
-    root_dir => getcwd . '/projects/gitosis-admin/keydir',
-);
+__PACKAGE__->config();
 
 =head1 NAME
 
