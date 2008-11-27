@@ -188,7 +188,7 @@ sub user_POST {
             $c->model('SSHKeys')->splat( "$name.pub", $key );
             push @{ $group->members }, "$name.pub";
         }
-        $c->stash->{gitosis}->save;
+        $c->stash->{gitosis}->save_repo;
         $c->response->redirect($c->uri_for("/project", $group->name, "users"));
     } else {
         die 'Missing Request Data';    # Throw the correct error here
@@ -220,7 +220,7 @@ sub user_DELETE {
         my @members = grep { $_ ne $filename } @{ $project->members };
         $project->members( \@members );
     }
-    $c->stash->{gitosis}->save;
+    $c->stash->{gitosis}->save_repo;
 
     $c->response->redirect($c->uri_for("/project", $group->name, "users"));
 }
@@ -297,7 +297,7 @@ sub repo_POST {
         }
         push @{ $group->writable }, $name;
         warn "Writable is: " . join(", ", @{ $group->writable }) . "\n";
-        $c->stash->{gitosis}->save;
+        $c->stash->{gitosis}->save_repo;
         $c->response->redirect($c->uri_for("/project", $group->name, "repos", $name));
     }
 }
@@ -310,7 +310,7 @@ sub repo_DELETE {
     my @repos = grep { $_ ne $name } @{ $group->writable };
     $group->writable(\@repos);
     
-    $c->stash->{gitosis}->save;
+    $c->stash->{gitosis}->save_repo;
     $c->response->redirect($c->uri_for("/project", $group->name, "repos"));
 }
 

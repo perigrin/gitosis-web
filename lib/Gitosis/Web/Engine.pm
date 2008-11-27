@@ -2,6 +2,8 @@ package Gitosis::Web::Engine;
 use Moose;
 use MooseX::AttributeHelpers;
 use JSON::XS;
+use JavaScript::Minifier;
+use CSS::Minifier;
 
 has app => (
     isa     => 'Gitosis::Web',
@@ -59,9 +61,17 @@ sub update_group {
     return $group;
 }
 
-sub save_repo {
+sub update_repo {
     my ($self) = @_;
     my $repo = $self->model('GitosisRepo');
+    $repo->command('pull');
+}
+
+sub save_repo {
+    my ($self) = @_;
+    my $cfg  = $self->model('GitosisConfig');
+    my $repo = $self->model('GitosisRepo');
+    $cfg->save;
     $repo->command( 'commit', '-am', 'update from gitweb' );
     $repo->command('push');
 }

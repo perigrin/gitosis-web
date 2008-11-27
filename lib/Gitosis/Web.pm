@@ -22,18 +22,16 @@ has gitweb_engine => (
     isa        => 'Gitosis::Web::Engine',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [
-        qw(
-          add_group
-          update_group
-          find_group_by_name
-          save_repo
-          maketext
-          add_widget
-          widgets
-          widget_js
-          )
-    ],
+    handles    => [qw(
+        add_group
+        update_group
+        find_group_by_name
+        save_repo
+        maketext
+        add_widget
+        widgets
+        widget_js
+    )],
 );
 
 sub _build_gitweb_engine {
