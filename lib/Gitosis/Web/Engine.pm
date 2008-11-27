@@ -94,6 +94,44 @@ sub widget_js {
     return $js;
 }
 
+sub BUILD {
+    my $self = shift;
+    warn "Building resources";
+    my %resources = (
+        "/static/js/gitosisweb.js" => [qw(
+            /static/js/mootools-1.2.1-core-compressed.js
+            /static/js/mootools-1.2-more-compressed_full.js
+            /static/js/clientcide-trunk-596.compressed.js
+            /static/js/textboxlist-compressed.js
+            /static/js/facebook-list.js
+            /static/js/common.js
+        )],
+    );
+    foreach my $filename (keys %resources) {
+        my $out = '';
+        foreach my $input (@{ $resources{$filename} }) {
+            local $/;
+            open my $fh, $self->app->path_to('root', $input)
+                or die "Can't read file $input: $!";
+            $out .= <$fh>;
+            close $fh;
+        }
+        $filename = $self->app->path_to('root', $filename);
+        open my $outfh, ">$filename" or die "Can't open $filename for write: $!";
+        if (0) {
+            print $outfh $out;
+        } else {
+            if ($filename =~ /\.js$/) {
+                JavaScript::Minifier::minify(input => $out, outfile => $outfh);
+            } elsif ($filename =~ /\.css$/) {
+                CSS::Minifier::minify(input => $out, outfile => $outfh);
+            } else {
+                print $outfh $out;
+            }
+        }
+        close $outfh;
+    }
+}
 no Moose;
 1;
 __END__
