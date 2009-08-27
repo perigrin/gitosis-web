@@ -1,38 +1,27 @@
 package Gitosis::Web::Controller::Root;
+use Moose;
+use Cwd qw(getcwd);
+BEGIN { extends 'Catalyst::Controller::REST' }
 
-use strict;
-use warnings;
-use base 'Catalyst::Controller';
-use Cwd;
-
+#
+# Sets the actions in this controller to be registered with no prefix
+# so they function identically to actions created in MyApp.pm
+#
 __PACKAGE__->config(
-    'namespace' => '',
-    'default'   => 'text/x-json',
-    'stash_key' => 'rest',
-    'map'       => {
-        'text/html'          => [qw( View Template )],
-        'text/x-yaml'        => 'YAML',
-        'text/x-json'        => 'JSON',
-        'text/x-data-dumper' => [qw( Data::Serializer Data::Dumper )],
+    default => 'text/html',
+    map     => {
+        'text/html' => [ 'View', 'TT' ],
+        'text/xml'  => undef
     },
+    namespace => '',
 );
 
-sub auto : Private {
-    my ( $self, $c ) = @_;
-    $c->stash->{gitosis} = $c->model('GitosisConfig');
-    $c->stash->{browser} = $c->request->browser;
-}
 
-sub index : Private {
-    my ( $self, $c ) = @_;
-
-    warn "Index?";
-}
+sub index :Path(/) {}
 
 sub repo : Path('/repo') {
     my ( $self, $c, $name ) = @_;
     $c->stash->{repo_path} = getcwd . "/projects/$name/.git";
-    $c->stash->{repo}      = $c->model('Git');
     $c->stash->{name}      = $name;
 }
 

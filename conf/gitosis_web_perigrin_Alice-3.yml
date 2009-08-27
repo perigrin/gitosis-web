@@ -1,0 +1,8 @@
+---
+name: Gitosis::Web
+'Model::Gitosis':
+ args: 
+      directory: /Users/perigrin/dev/gitosis-admin
+'Model::SSHKeys':
+      root_dir: /Users/perigrin/dev/gitosis-admin/keydir
+    

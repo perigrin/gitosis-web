@@ -21,7 +21,7 @@ sub group : Path('/group') : ActionClass('REST') {
 
 sub group_GET {
     my ( $self, $c, $name ) = @_;
-    $c->stash->{group}    = $c->find_group_by_name($name);
+    $c->stash->{group}    = $c->model('Gitosis')->find_group_by_name($name);
     $c->stash->{template} = 'group.tt2';
 }
 
@@ -30,12 +30,12 @@ sub group_POST {
 
     # we're updating, POST should have been sent as PUT
     return $self->group_PUT( $c, $name )
-      if ( defined $name && $c->find_group_by_name($name) );
+      if ( defined $name && $c->model('Gitosis')->find_group_by_name($name) );
 
     if ( my $data = $c->request->params() ) {
         $name ||= $data->{'group.name'};
 
-        my $group = $c->add_group( $name => $data );
+        my $group = $c->model('Gitosis')->add_group( $name => $data );
 
         return $self->save_repo_and_redirect(
             $c => $c->uri_for( '/group', $group->name ) );
@@ -46,7 +46,7 @@ sub group_POST {
 sub group_PUT {
     my ( $self, $c, $name ) = @_;
     if ( my $data = $c->request->params() ) {
-        my $group = $c->update_group( $name => $data );
+        my $group = $c->model('Gitosis')->update_group( $name => $data );
         return $self->save_repo_and_redirect(
             $c => $c->uri_for( '/group', $group->name ) );
     }
@@ -63,7 +63,7 @@ sub group_DELETE {
 
 sub save_repo_and_redirect {
     my ( $self, $c, $url ) = @_;
-    $c->save_repo();
+    $c->model('Gitosis')->save_repo();
     return $c->res->redirect($url);
 }
 

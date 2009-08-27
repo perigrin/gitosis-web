@@ -1,12 +1,13 @@
 package Gitosis::Web::Model::SSHKeys;
-
-use strict;
-use base 'Catalyst::Model::File';
-use Cwd;
+use Moose;
+BEGIN { extends 'Catalyst::Model::File' }
 
 __PACKAGE__->config();
 
-=head1 NAME
+1;
+__END__
+
+=head1 NAME 
 
 Gitosis::Web::Model::SSHKeys - Catalyst File Model
 
@@ -29,5 +30,3 @@ This library is free software, you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
-
-1;

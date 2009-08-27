@@ -2,6 +2,7 @@ package Gitosis::Web;
 our $VERSION = '0.01';
 use Moose;
 use Catalyst::Runtime '5.70';
+use Sys::Hostname ();
 
 use Catalyst qw(
   -Debug
@@ -18,25 +19,21 @@ use Catalyst qw(
   Browser
 );
 
-has gitweb_engine => (
-    isa        => 'Gitosis::Web::Engine',
-    is         => 'ro',
+has widgets => (
+    isa        => 'Gitosis::Web::Widgets',
     lazy_build => 1,
-    handles    => [qw(
-        add_group
-        update_group
-        find_group_by_name
-        save_repo
-        maketext
-        add_widget
-        widgets
-        widget_js
-    )],
+    handles    => [
+        qw(
+          add_widget
+          widgets
+          widget_js
+          )
+    ],
 );
 
-sub _build_gitweb_engine {
-    require Gitosis::Web::Engine;
-    return Gitosis::Web::Engine->new( app => $_[0] );
+sub _build_widgets {
+    require Gitosis::Web::Widgets;
+    return Gitosis::Web::Widgets->new( app => $_[0] );
 }
 
 # Configure the application.
@@ -48,27 +45,42 @@ sub _build_gitweb_engine {
 # with a external configuration file acting as an override for
 # local deployment.
 
-__PACKAGE__->config(
-    name    => 'Gitosis::Web',
-    static  => { dirs => [qw( static )] },
-    session => {},
+my $login = $ENV{USER};
+my ($sys_hostname) = Sys::Hostname::hostname() =~ m/^([^\.]+)/;
 
-    authentication => {
-        default_realm => 'openid',
-        realms        => {
-            openid => {
-                ua_args => { whitelisted_hosts => [qw( 127.0.0.1 localhost )] },
-                credential => {
-                    class => "OpenID",
-                    store => { class => "OpenID" },
-                },
-            },
-        },
+__PACKAGE__->config(
+    name                   => 'Gitosis::Web',
+    'Plugin::ConfigLoader' => {
+        file => __PACKAGE__->path_to('conf'),
+        config_local_suffix =>
+          join( '_', grep { defined } ( $login, $sys_hostname ) ),
     },
+    static                   => { dirs => [qw( static )] },
+    session                  => {},
+    'Plugin::Authentication' => {
+        default => {
+            credential => {
+                class          => 'Password',
+                password_field => 'password',
+                password_type  => 'clear'
+            },
+            store => {
+                class => 'Minimal',
+                users => {
+                    guest => {
+                        password => "password",
+                    },
+                }
+            }
+        }
+      }
 
 );
 
 __PACKAGE__->setup;
+
+1;
+__END__
 
 =head1 NAME
 
@@ -97,4 +109,3 @@ it under the same terms as Perl itself.
 
 =cut
 
-1;

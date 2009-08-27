@@ -1,13 +1,7 @@
 ---
 name: Gitosis::Web
-Model::GitosisConfig:
-     args:
-       file: /var/gitosis-admin/gitosis.conf
-Model::GitosisRepo:
-      args:
-        root_dir: /var/gitosis-admin/
-Model::SSHKeys:
+'Model::Gitosis':
+ args: 
+      directory: /var/gitosis-admin
+'Model::SSHKeys':
       root_dir: /var/gitosis-admin/keydir
-Model::Accounts:
-      config: users.conf
-    
