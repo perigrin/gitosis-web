@@ -35,18 +35,6 @@ sub signup : Path('/signup') {
     );
 }
 
-sub openid : Path('/openid') {
-    my ( $self, $c ) = @_;
-    if ( $c->authenticate() ) {
-        $c->res->redirect( $c->uri_for('/') );
-    }
-    $c->add_widget(
-        {
-            id    => 'OpenID',
-            class => 'Page_Account_OpenID',
-        }
-    );
-}
 
 sub login : Global {
     my ( $self, $c ) = @_;

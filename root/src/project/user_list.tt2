@@ -82,8 +82,8 @@
         [% FOR member IN project.members %]
         <li>
             <div class="UserName">
-                <a href="[% c.uri_for('/project', project.name, 'users', member.replace(/.pub$/, '')) %]">
-                    [% member.replace(/.pub$/, '') %]
+                <a href="[% c.uri_for('/project', project.name, 'users', member.replace('.pub$', '')) %]">
+                    [% member.replace('.pub$', '') %]
                 </a>
             </div>
         </li>

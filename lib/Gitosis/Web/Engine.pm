@@ -9,7 +9,7 @@ has config => (
     isa        => 'Gitosis::Config',
     is         => 'ro',
     lazy_build => 1,
-    handles    => [qw(groups)],
+    handles    => [qw(groups find_group_by_name)],
 );
 
 sub _build_config {
@@ -21,15 +21,14 @@ has repo => (
     isa        => 'Git::Wrapper',
     is         => 'ro',
     lazy_build => 1,
+    handles    => { pull => 'update_repo', },
 );
 
 sub _build_repo {
     my ($self) = @_;
-    Git::Wrapper->new( Directory => $self->directory );
-}
-
-sub find_group_by_name {
-    shift->config->find_group_by_name(@_);
+    my $repo = Git::Wrapper->new( Directory => $self->directory );
+    $repo->pull;
+    return $repo;
 }
 
 sub add_group {
@@ -37,7 +36,6 @@ sub add_group {
 
     my $cfg = $self->config;
     if ( my $group = $cfg->find_group_by_name( $data->{'group.name'} ) ) {
-        warn 'Group exists';
         return $group;
     }
 
@@ -66,20 +64,11 @@ sub update_group {
     return $group;
 }
 
-sub update_repo {
-    my ($self) = @_;
-    my $repo = $self->config;
-    $repo->pull;
-}
-
 sub save_repo {
     my ( $self, $message ) = @_;
-    $message ||= 'unknown update';
-    $message = "Gitosis Web: $message";
-    my $cfg  = $self->config;
     my $repo = $self->repo;
-    $cfg->save;
-    $repo->commit( { all => 1, message => $message } );
+    $self->config->save;
+    $repo->commit( { all => 1, message => "Gitosis Web: $message" } );
     $repo->push;
 }
 

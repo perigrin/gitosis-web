@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>[% template.title or site.title %]</title>
-        <link rel="stylesheet" type="text/css" media="screen,projection" href="/static/style/screen.css"/>
         <!--<link rel="stylesheet" type="text/css" media="screen" href="/static/style/textboxlist.css"/>-->
+        <link rel="stylesheet" type="text/css" media="screen,projection" href="/static/style/screen.css"/>
         <link rel="stylesheet" type="text/css" media="print" href="/static/style/print.css"/>
         <!--[if IE]><link rel="stylesheet" href="/static/style/ie.css" type="text/css" media="screen,projection"/><![endif]-->
     </head>

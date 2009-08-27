@@ -1,4 +1,4 @@
-[% PROCESS lib/site/header %]
+[% PROCESS site/header %]
 <div id="PageBody">
     [% IF project %]
     <ul class="NavigationBar">
@@ -10,4 +10,4 @@
     [% END %]
     <div id="PageBodyContent">[% content %]</div>
 </div>
-[% PROCESS lib/site/footer %]
+[% PROCESS site/footer %]
