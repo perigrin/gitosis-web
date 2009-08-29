@@ -1,4 +1,0 @@
-<form action="[% c.uri_for('/login') %]" method="GET" name="openid">
-    <input type="text" name="openid_identifier" style="width: 60ex" class="openid" />
-    <input type="submit" value="Login" />
-</form>

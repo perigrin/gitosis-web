@@ -16,7 +16,6 @@ use Catalyst qw(
 
   Unicode
   I18N
-  Browser
 );
 
 has widgets => (

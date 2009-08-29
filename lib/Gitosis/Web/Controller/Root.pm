@@ -1,31 +1,32 @@
 package Gitosis::Web::Controller::Root;
 use Moose;
-use Cwd qw(getcwd);
-BEGIN { extends 'Catalyst::Controller::REST' }
+BEGIN { extends 'Reaction::UI::Controller::Root' }
 
-#
-# Sets the actions in this controller to be registered with no prefix
-# so they function identically to actions created in MyApp.pm
-#
+use aliased 'Reaction::UI::ViewPort';
+use aliased 'Reaction::UI::ViewPort::SiteLayout';
+
+use namespace::autoclean;
+
 __PACKAGE__->config(
-    default => 'text/html',
-    map     => {
-        'text/html' => [ 'View', 'TT' ],
-        'text/xml'  => undef
-    },
-    namespace => '',
+    view_name    => 'Site',
+    window_title => 'MyApp Window',
+    namespace    => '',
 );
 
-
-sub index :Path(/) {}
-
-sub repo : Path('/repo') {
-    my ( $self, $c, $name ) = @_;
-    $c->stash->{repo_path} = getcwd . "/projects/$name/.git";
-    $c->stash->{name}      = $name;
+sub base : Chained('/') PathPart('') CaptureArgs(0) {
+    my ( $self, $ctx ) = @_;
+    $self->push_viewport( SiteLayout,
+        title           => 'MyApp Test Title',
+        static_base_uri => join( '', $ctx->uri_for('/static') ),
+        meta_info =>
+          { http_header => { 'Content-Type' => 'text/html;charset=utf-8', }, },
+    );
 }
 
-sub end : ActionClass('Serialize') {
+sub root : Chained('base') PathPart('') Args(0) {
+    my ( $self, $ctx ) = @_;
+    $self->push_viewport( ViewPort, layout => 'root' );
 }
 
 1;
+__END__

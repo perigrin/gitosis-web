@@ -1,0 +1,11 @@
+=extends NEXT
+
+=for layout body
+
+    <h1>Welcome to MyApp</h1>
+
+    <div id="content">
+        [% inner %]
+    </div>
+
+=cut
